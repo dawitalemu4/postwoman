@@ -6,6 +6,7 @@ require (
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.4
+	github.com/stephenafamo/scan v0.5.0
 )
 
 require (

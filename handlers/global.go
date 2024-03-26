@@ -1,17 +1,17 @@
 package handlers
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+    "github.com/labstack/echo/v4"
+    "github.com/labstack/echo/v4/middleware"
 
     "postwoman/utils"
-	"postwoman/views"
+    "postwoman/views"
 )
 
-var env = utils.GetEnv()
 
 func ConfigGlobalHandler() *echo.Echo {
 
+    var env = utils.GetEnv()
     e := echo.New()
     
     e.Renderer = views.RenderTemplate()

@@ -1,8 +1,14 @@
+github.com/aarondl/json v0.0.0-20221020222930-8b0db17ef1bf h1:+edM69bH/X6JpYPmJYBRLanAMe1V5yRXYU3hHUovGcE=
+github.com/aarondl/json v0.0.0-20221020222930-8b0db17ef1bf/go.mod h1:FZqLhJSj2tg0ZN48GB1zvj00+ZYcHPqgsC7yzcgCq6k=
+github.com/aarondl/opt v0.0.0-20221129170750-3d40c96d9bb8 h1:pAJut2Ye6sxwIS8zQvu1BhX87B+9MwUKmzjdEkwPWg4=
+github.com/aarondl/opt v0.0.0-20221129170750-3d40c96d9bb8/go.mod h1:l4/5NZtYd/SIohsFhaJQQe+sPOTG22furpZ5FvcYOzk=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/golang-jwt/jwt v3.2.2+incompatible h1:IfV12K8xAKAnZqdXVzCZ+TOjboZ2keLg81eXfW3O+oY=
 github.com/golang-jwt/jwt v3.2.2+incompatible/go.mod h1:8pz2t5EyA70fFQQSrl6XZXzqecmYZeUEB8OUGHkxJ+I=
+github.com/google/go-cmp v0.5.8 h1:e6P7q2lk1O+qJJb4BtCQXlK8vWEO8V1ZeuEdJNOqZyg=
+github.com/google/go-cmp v0.5.8/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a h1:bbPeKD0xmW/Y25WS6cokEszi5g+S0QxI/d45PkRi7Nk=
@@ -24,6 +30,10 @@ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWE
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/stephenafamo/fakedb v0.0.0-20221230081958-0b86f816ed97 h1:XItoZNmhOih06TC02jK7l3wlpZ0XT/sPQYutDcGOQjg=
+github.com/stephenafamo/fakedb v0.0.0-20221230081958-0b86f816ed97/go.mod h1:bM3Vmw1IakoaXocHmMIGgJFYob0vuK+CFWiJHQvz0jQ=
+github.com/stephenafamo/scan v0.5.0 h1:1zDlY1PFnLB8MErWVil/vywAoZxGIdQS/y8nDiGU+/c=
+github.com/stephenafamo/scan v0.5.0/go.mod h1:FhIUJ8pLNyex36xGFiazDJJ5Xry0UkAi+RkWRrEcRMg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=

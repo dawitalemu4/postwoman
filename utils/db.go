@@ -1,7 +1,7 @@
 package utils 
 
 import (
-	"context"
+    "context"
 
     "github.com/labstack/echo/v4"
     "github.com/jackc/pgx/v5"
@@ -16,8 +16,6 @@ func DB() *pgx.Conn {
     if err != nil {
         e.Logger.Fatal("Unable to connect to database: %v\n", err)
     }
-
-	defer db.Close(context.Background())
 
     return db
 }

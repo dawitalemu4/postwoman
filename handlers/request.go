@@ -10,7 +10,7 @@ func RequestHandler() *echo.Echo {
 
     e.GET("/api/request/all/:userID", controllers.GetAllRequests)
     e.POST("/api/request/new/:userID", controllers.CreateRequest)
-    e.DELETE("/api/request/delete/:userID/:reqID", controllers.DeleteRequest)
+    e.DELETE("/api/request/delete/:reqID/:userID", controllers.DeleteRequest)
 
     return e
 }

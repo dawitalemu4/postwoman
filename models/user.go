@@ -1,25 +1,26 @@
 package models
 
 type User struct {
-    id           int
-    username     string
-    email        string
-    password     string
-    history      []int
-    favorites    []int
-    deleted      bool
+    ID           int
+    Username     string    `json:"username"`
+    Email        string    `json:"email"`
+    Password     string    `json:"password"`
+    History      []int     `json:"history"`
+    Favorites    []int     `json:"favorites"`
+    Deleted      bool      `json:"deleted"`
 }
 
 func (user User) validate(data User) bool {
-    
-    if data.id != 0 ||
-        data.username != "" ||
-        data.email != "" ||
-        data.password != "" ||
-        data.deleted == false {
+
+    if data.Username != "" &&
+        data.Email != "" &&
+        data.Password != "" &&
+        len(data.History) != 0 || len(data.History) == 0 &&
+        len(data.Favorites) != 0 || len(data.Favorites) == 0 &&
+        data.Deleted == false {
 
         return true
-    } else {
-        return false
     }
+
+    return false
 }
