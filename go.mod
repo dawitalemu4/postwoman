@@ -3,8 +3,10 @@ module postwoman
 go 1.22.1
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/joho/godotenv v1.5.1
+	github.com/labstack/echo-jwt/v4 v4.2.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/stephenafamo/scan v0.5.0
 )

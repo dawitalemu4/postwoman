@@ -31,6 +31,7 @@ func GetAllRequests(c echo.Context) error {
 
 func CreateRequest(c echo.Context) error {
 
+    var res string
     var data models.Request
     userID := c.Param("userID")
     intUserID, _ := strconv.Atoi(userID)
@@ -39,8 +40,8 @@ func CreateRequest(c echo.Context) error {
 
     if data.Validated(data) && intUserID == data.User_id {
 
-        err := db.QueryRow(context.Background(), "INSERT INTO request (user_id, url, method, headers, body, status, date, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-            userID, data.Url, data.Method, data.Headers, data.Body, data.Status, data.Date, data.Deleted).Scan()
+        err := db.QueryRow(context.Background(), "INSERT INTO request (user_id, url, method, origin, headers, body, status, date, hidden) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
+            userID, data.Url, data.Method, data.Origin, data.Headers, data.Body, data.Status, data.Date, data.Hidden).Scan(&res)
 
         if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
@@ -49,7 +50,26 @@ func CreateRequest(c echo.Context) error {
         return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
     }
 
-    return c.NoContent(200)
+    return c.JSONPretty(200, res, " ")
+}
+
+func HideRequest(c echo.Context) error {
+
+    var res string
+    requestID := c.Param("reqID")
+    userID := c.Param("userID")
+
+    err := db.QueryRow(context.Background(), "UPDATE request SET hidden = true WHERE id = $1 AND user_id = $2 RETURNING $1", requestID, userID).Scan(&res)
+
+    if res != requestID {
+        return c.JSONPretty(404, errorJSON("User Error", "No requests found made with the IDs provided"), " ")
+    }
+
+    if err != nil && err.Error() != "no rows in result set" {
+        return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
+    }
+
+    return c.String(200, res)
 }
 
 func DeleteRequest(c echo.Context) error {
