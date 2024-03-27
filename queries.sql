@@ -3,11 +3,12 @@ CREATE TABLE request (
     user_id INT NOT NULL,
     url TEXT NOT NULL,
     method TEXT NOT NULL,
+    origin TEXT NOT NULL,
     headers TEXT,
     body TEXT,
     status TEXT NOT NULL,
     date TEXT NOT NULL,
-    deleted BOOLEAN NOT NULL
+    hidden BOOLEAN NOT NULL
 );
 
 CREATE TABLE "user" (
@@ -17,6 +18,7 @@ CREATE TABLE "user" (
     password TEXT NOT NULL,
     history INTEGER[],
     favorites INTEGER[],
+    date TEXT NOT NULL,
     deleted BOOLEAN NOT NULL
 );
 
