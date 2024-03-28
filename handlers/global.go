@@ -8,7 +8,6 @@ import (
     "postwoman/views"
 )
 
-
 func ConfigGlobalHandler() *echo.Echo {
 
     var env = utils.GetEnv()
@@ -17,7 +16,7 @@ func ConfigGlobalHandler() *echo.Echo {
     e.Renderer = views.RenderTemplate()
 
     e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-        AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"]},
+        AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"], env["AUTH0_DOMAIN"]},
     }))
 
     e.Pre(middleware.RemoveTrailingSlash())
