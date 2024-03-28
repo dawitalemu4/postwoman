@@ -3,10 +3,10 @@ package controllers
 import (
     "context"
     "encoding/json"
-	"time"
+    "time"
 
     "github.com/labstack/echo/v4"
-	"github.com/golang-jwt/jwt/v5"
+    "github.com/golang-jwt/jwt/v5"
 
     "postwoman/models"
 )
@@ -19,9 +19,9 @@ func CreateJWT(c echo.Context) error {
 
     dataWithExpiration := &models.User{
         data.ID, data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted,
-		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 336)),
-		},
+        jwt.RegisteredClaims{
+            ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 336)),
+        },
     }
 
     token := jwt.NewWithClaims(jwt.SigningMethodHS256, dataWithExpiration)
@@ -29,8 +29,8 @@ func CreateJWT(c echo.Context) error {
     res, err := token.SignedString([]byte("secret"))
 
     if err != nil {
-		return err
-	}
+        return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
+    }
 
     return c.JSONPretty(200, res, " ")
 }
@@ -46,7 +46,7 @@ func GetUser(c echo.Context) error {
 
         err := db.QueryRow(context.Background(), `SELECT id FROM "user" WHERE id = $1 AND email = $2 AND password = $3`, data.ID, data.Email, data.Password).Scan(&res)
 
-        if res != data.ID || err.Error() == "no rows in result set" {
+        if res != data.ID {
             return c.JSONPretty(401, errorJSON("User Error", "No users found from this id and cred combo"), " ")
         }
 
@@ -57,7 +57,7 @@ func GetUser(c echo.Context) error {
         return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
     }
 
-    return c.JSONPretty(200, CreateJWT(c), " ")
+    return CreateJWT(c)
 }
 
 func CreateUser(c echo.Context) error {

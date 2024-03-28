@@ -3,6 +3,7 @@ package controllers
 import "postwoman/utils"
 
 var db = utils.DB()
+var env = utils.GetEnv()
 
 type jsonMessage struct {
     Key      string    `json:"key"`

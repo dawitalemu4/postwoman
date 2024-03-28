@@ -11,7 +11,7 @@ type User struct {
     Favorites    []int     `json:"favorites"`
     Date         string    `json:"date"`
     Deleted      bool      `json:"deleted"`
-	jwt.RegisteredClaims
+    jwt.RegisteredClaims
 }
 
 func (user User) Validated(data User) bool {
