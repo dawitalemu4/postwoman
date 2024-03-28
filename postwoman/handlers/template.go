@@ -13,7 +13,7 @@ func TemplateHandler() *echo.Echo {
     })
 
     e.GET("/login", func(c echo.Context) error {
-        return c.Render(http.StatusOK, "login", "login")
+        return c.Render(http.StatusOK, "login", "log")
     })
 
     e.GET("/signup", func(c echo.Context) error {
