@@ -10,6 +10,7 @@ type User struct {
     History      []int     `json:"history"`
     Favorites    []int     `json:"favorites"`
     Date         string    `json:"date"`
+    Token        string    `json:"token"`
     Deleted      bool      `json:"deleted"`
     jwt.RegisteredClaims
 }

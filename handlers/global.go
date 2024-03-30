@@ -1,29 +1,15 @@
 package handlers
 
-import (
-    "github.com/labstack/echo/v4"
-    "github.com/labstack/echo/v4/middleware"
+import "postwoman/utils"
 
-    "postwoman/utils"
-    "postwoman/views"
-)
+var db = utils.DB()
+var env = utils.GetEnv()
 
-func ConfigGlobalHandler() *echo.Echo {
-
-    var env = utils.GetEnv()
-    e := echo.New()
-    
-    e.Renderer = views.RenderTemplate()
-
-    e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-        AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"], env["AUTH0_DOMAIN"]},
-    }))
-
-    e.Pre(middleware.RemoveTrailingSlash())
-
-    e.Use(middleware.BodyDump(func(c echo.Context, reqBody, resBody []byte) {}))
-
-    return e 
+type jsonMessage struct {
+    Key      string    `json:"key"`
+    Value    string    `json:"value"`
 }
 
-var e = ConfigGlobalHandler()
+func errorJSON(key string, value string) jsonMessage {
+    return jsonMessage{Key: key, Value: value}
+}

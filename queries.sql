@@ -19,6 +19,7 @@ CREATE TABLE "user" (
     history INTEGER[],
     favorites INTEGER[],
     date TEXT NOT NULL,
+    token TEXT,
     deleted BOOLEAN NOT NULL
 );
 

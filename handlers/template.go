@@ -1,26 +1,23 @@
 package handlers
 
 import (
-    "net/http"
+    "html/template"
+    "io"
 
     "github.com/labstack/echo/v4"
 )
 
-func TemplateHandler() *echo.Echo {
+type Template struct {
+    templates *template.Template
+}
 
-    e.GET("/", func(c echo.Context) error {
-        return c.Render(http.StatusOK, "index", "Hello Sandra!")
-    })
+func (template *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+    return template.templates.ExecuteTemplate(w, name, data)
+}
 
-    e.GET("/login", func(c echo.Context) error {
-        return c.Render(http.StatusOK, "login", "login")
-    })
+func RenderTemplate() *Template {
 
-    e.GET("/signup", func(c echo.Context) error {
-        return c.Render(http.StatusOK, "signup", "signup")
-    })
-
-    e.Static("/public", "views/html/public")
-
-    return e
+    return &Template{
+        templates: template.Must(template.ParseGlob("views/html/*.html")),
+    }
 }

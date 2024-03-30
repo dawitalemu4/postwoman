@@ -2,17 +2,17 @@ package main
 
 import (
     "postwoman/utils"
-    "postwoman/handlers"
+    "postwoman/routes"
 )
 
 func main() {
-	
-    var env = utils.GetEnv()
-    e := handlers.ConfigGlobalHandler()
 
-    e = handlers.TemplateHandler()
-    e = handlers.UserHandler()
-    e = handlers.RequestHandler()
+    var env = utils.GetEnv()
+    e := routes.ConfigGlobalHandler()
+
+    e = routes.TemplateHandler()
+    e = routes.UserHandler()
+    e = routes.RequestHandler()
 
     e.Logger.Fatal(e.Start(env["GO_PORT"]))
 }
