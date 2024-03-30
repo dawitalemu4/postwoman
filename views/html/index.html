@@ -1,0 +1,30 @@
+{{ block "index" . }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/index.js" defer></script>
+    <title>postwoman</title>
+</head>
+<body>
+    <div id="navbar">
+        <a id="login" href="/login">Login /</a>
+        <a id="signup" href="/signup">/ Signup</a>
+    </div>
+    <div id="terminal">
+        <div id="terminal-header">
+            <p>postwoman:~</p>
+            <img src="/public/terminal-buttons.webp" alt="Terminal Buttons">
+        </div>
+        <div id="terminal-console">
+        </div>
+    </div>
+    <div id="shortcuts">
+        
+    </div>
+</body>
+</html>
+{{ end }}

@@ -1,13 +1,11 @@
-package views
+package handlers
 
 import (
     "html/template"
     "io"
-    
+
     "github.com/labstack/echo/v4"
 )
-
-var e = echo.New()
 
 type Template struct {
     templates *template.Template

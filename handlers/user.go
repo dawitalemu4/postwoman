@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
     "context"
@@ -18,7 +18,7 @@ func CreateJWT(c echo.Context) error {
     json.NewDecoder(c.Request().Body).Decode(&data)
 
     dataWithExpiration := &models.User{
-        data.ID, data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted,
+        data.ID, data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Token, data.Deleted,
         jwt.RegisteredClaims{
             ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 336)),
         },
@@ -69,8 +69,8 @@ func CreateUser(c echo.Context) error {
 
     if data.Validated(data) {
 
-        err := db.QueryRow(context.Background(), `INSERT INTO "user" (username, email, password, history, favorites, date, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
-            data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted).Scan(&res)
+        err := db.QueryRow(context.Background(), `INSERT INTO "user" (username, email, password, history, favorites, date, token, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+            data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Token, data.Deleted).Scan(&res)
 
         if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
@@ -91,8 +91,8 @@ func UpdateUser(c echo.Context) error {
 
     if data.Validated(data) {
 
-        err := db.QueryRow(context.Background(), `UPDATE "user" SET username = $1, email = $2, password = $3, history = $4, favorites = $5, date = $6, deleted = $7 WHERE id = $8 RETURNING id`,
-            data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted, data.ID).Scan(&res)
+        err := db.QueryRow(context.Background(), `UPDATE "user" SET username = $1, email = $2, password = $3, history = $4, favorites = $5, date = $6, token = $7, deleted = $8 WHERE id = $9 RETURNING id`,
+            data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Token, data.Deleted, data.ID).Scan(&res)
 
         if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
