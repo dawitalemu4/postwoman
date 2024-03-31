@@ -1,0 +1,11 @@
+{{ define "navbar" }}
+    <div id="navbar">
+        <div>
+            <a id="{{ index . 1 }}" href="/">home</a>
+        </div>
+        <div>
+            <a id="{{ index . 2 }}" href="/login">login /</a>
+            <a id="{{ index . 3 }}" href="/signup">/ signup</a>
+        </div>
+    </div>
+{{ end }}

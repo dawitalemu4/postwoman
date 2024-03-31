@@ -8,13 +8,13 @@ import (
 
 func UserHandler() *echo.Echo {
 
-    e.POST("/api/auth/user", handlers.GetUser)
+    e.POST("/api/user/auth", handlers.GetUser)
     e.POST("/api/user/new", handlers.CreateUser)
-    e.PUT("/api/user/update/:id", handlers.UpdateUser)
-    e.DELETE("/api/user/delete/:id", handlers.DeleteUser)
+    e.PUT("/api/user/update", handlers.UpdateUser)
+    e.DELETE("/api/user/delete", handlers.DeleteUser)
 
-    e.PATCH("/api/user/history/:userID/:reqID", handlers.UpdateHistory)
-    e.PATCH("/api/user/favorites/:userID/:reqID", handlers.UpdateFavorites)
+    e.PATCH("/api/user/history/:reqID", handlers.UpdateHistory)
+    e.PATCH("/api/user/favorites", handlers.UpdateFavorites)
 
     return e
 }

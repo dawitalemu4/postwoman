@@ -10,6 +10,6 @@ while getopts "m:" arg; do
 
     git push origin dev
 
-    gcloud run deploy
+    gcloud run deploy --source
 
 done

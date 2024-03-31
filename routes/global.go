@@ -16,7 +16,7 @@ func ConfigGlobalHandler() *echo.Echo {
     e.Renderer = handlers.RenderTemplate()
 
     e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-        AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"], env["AUTH0_DOMAIN"]},
+        AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"]},
     }))
 
     e.Pre(middleware.RemoveTrailingSlash())

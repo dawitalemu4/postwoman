@@ -15,9 +15,11 @@ func (template *Template) Render(w io.Writer, name string, data interface{}, c e
     return template.templates.ExecuteTemplate(w, name, data)
 }
 
+func args(vs ...interface{}) []interface{} { return vs }
+
 func RenderTemplate() *Template {
 
     return &Template{
-        templates: template.Must(template.ParseGlob("views/html/*.html")),
+        templates: template.Must(template.New("").Funcs(template.FuncMap{"args": args}).ParseGlob("views/html/*.html")),
     }
 }

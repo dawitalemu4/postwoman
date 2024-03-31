@@ -1,16 +1,16 @@
 package models
 
 type Request struct {
-    ID         int       `json:"id"`
-    User_id    int       `json:"user_id"`
-    Url        string    `json:"url"`
-    Method     string    `json:"method"`
-    Origin     string    `json:"origin"`
-    Headers    string    `json:"headers"`
-    Body       string    `json:"body"`
-    Status     string    `json:"status"`
-    Date       string    `json:"date"`
-    Hidden     bool      `json:"deleted"`
+    ID            int       `json:"id"`
+    User_email    string    `json:"user_email"`
+    Url           string    `json:"url"`
+    Method        string    `json:"method"`
+    Origin        string    `json:"origin"`
+    Headers       string    `json:"headers"`
+    Body          string    `json:"body"`
+    Status        string    `json:"status"`
+    Date          string    `json:"date"`
+    Hidden        bool      `json:"hidden"`
 }
 
 func (request Request) Validated(data Request) bool {
@@ -19,8 +19,7 @@ func (request Request) Validated(data Request) bool {
         "GET": true, "POST": true, "UPDATE": true, "PUT": true, "DELETE": true,
     }
 
-    if data.User_id != 0 &&
-        data.Url != "" &&
+    if data.Url != "" &&
         method_options[data.Method] &&
         data.Origin != "" &&
         data.Headers != "" || data.Headers == "" &&

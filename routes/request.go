@@ -8,9 +8,9 @@ import (
 
 func RequestHandler() *echo.Echo {
 
-    e.GET("/api/request/all/:userID", handlers.GetAllRequests)
-    e.POST("/api/request/new/:userID", handlers.CreateRequest)
-    e.DELETE("/api/request/delete/:reqID/:userID", handlers.DeleteRequest)
+    e.GET("/api/request/all/:email", handlers.GetAllRequests)
+    e.POST("/api/request/new/:email", handlers.CreateRequest)
+    e.DELETE("/api/request/delete/:email/:reqID", handlers.DeleteRequest)
 
     return e
 }
