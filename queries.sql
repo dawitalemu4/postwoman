@@ -1,6 +1,6 @@
 CREATE TABLE request (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
+    user_email TEXT,
     url TEXT NOT NULL,
     method TEXT NOT NULL,
     origin TEXT NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE request (
 CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     history INTEGER[],
     favorites INTEGER[],
@@ -24,6 +24,6 @@ CREATE TABLE "user" (
 );
 
 ALTER TABLE request
-ADD CONSTRAINT fk_request_user_id
-FOREIGN KEY (user_id)
-REFERENCES "user"(id);
+ADD CONSTRAINT fk_request_user_email
+FOREIGN KEY (user_email)
+REFERENCES "user"(email);
