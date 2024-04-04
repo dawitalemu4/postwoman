@@ -8,11 +8,11 @@ import (
 func main() {
 
     var env = utils.GetEnv()
-    e := routes.ConfigGlobalHandler()
+    e := routes.ConfigGlobalRoutes()
 
-    e = routes.TemplateHandler()
-    e = routes.UserHandler()
-    e = routes.RequestHandler()
+    e = routes.TemplateRoutes()
+    e = routes.UserRoutes()
+    e = routes.RequestRoutes()
 
     e.Logger.Fatal(e.Start(env["GO_PORT"]))
 }

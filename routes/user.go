@@ -6,7 +6,7 @@ import (
     "postwoman/handlers"
 )
 
-func UserHandler() *echo.Echo {
+func UserRoutes() *echo.Echo {
 
     e.POST("/api/user/auth", handlers.GetUser)
     e.POST("/api/user/new", handlers.CreateUser)

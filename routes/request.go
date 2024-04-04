@@ -6,7 +6,7 @@ import (
     "postwoman/handlers"
 )
 
-func RequestHandler() *echo.Echo {
+func RequestRoutes() *echo.Echo {
 
     e.GET("/api/request/all/:email", handlers.GetAllRequests)
     e.POST("/api/request/new/:email", handlers.CreateRequest)

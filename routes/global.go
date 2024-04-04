@@ -4,20 +4,18 @@ import (
     "github.com/labstack/echo/v4"
     "github.com/labstack/echo/v4/middleware"
 
-    "postwoman/utils"
     "postwoman/handlers"
 )
 
-func ConfigGlobalHandler() *echo.Echo {
+func ConfigGlobalRoutes() *echo.Echo {
 
-    var env = utils.GetEnv()
     e := echo.New()
     
     e.Renderer = handlers.RenderTemplate()
 
-    e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-        AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"]},
-    }))
+    // e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+    //     AllowOrigins: []string{env["CLIENT_URL"], env["LOCAL_URL"]},
+    // }))
 
     e.Pre(middleware.RemoveTrailingSlash())
 
@@ -26,4 +24,4 @@ func ConfigGlobalHandler() *echo.Echo {
     return e 
 }
 
-var e = ConfigGlobalHandler()
+var e = ConfigGlobalRoutes()

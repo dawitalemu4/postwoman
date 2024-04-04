@@ -1,14 +1,13 @@
-{{ define "index" }}
+{{ define "postwoman" }}
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        {{ template "head" }}
-        <script src="/js/index.js" defer></script>
+        {{ template "head" args . .screen }}
     </head>
     <body>
-        {{ template "navbar" args . .home .login .signup }}
-        {{ template "terminal_index" }}
-        {{ template "shortcuts" }}
+        {{ template "navbar" args . .screen }}
+        {{ template "terminal" args . .screen }}
+        {{ template "shortcuts" args . .screen }}
     </body>
 </html>
 {{ end }}
