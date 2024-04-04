@@ -1,0 +1,39 @@
+#signup-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+}
+
+#signup-form {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+}
+
+#signup-form div {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+}
+
+#signup-form div {
+    margin-left: 10px;
+}
+
+.signup-input {
+    font-family: CascadiaMono;
+    font-size: 16px;
+    color: white;
+    margin-left: 10px;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
+#signup-submit {
+    display: none;
+}

@@ -10,6 +10,6 @@ while getopts "m:" arg; do
 
     git push origin dev
 
-    gcloud run deploy --source
+    gcloud run deploy postwoman --source . 
 
 done

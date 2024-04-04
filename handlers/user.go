@@ -40,7 +40,7 @@ func createJWT(data models.User) map[string]interface{} {
 
     token := jwt.NewWithClaims(jwt.SigningMethodHS256, dataWithExpiration)
 
-    res, err := token.SignedString([]byte("secret"))
+    res, err := token.SignedString([]byte(env["JWT_SIGNATURE"]))
 
     if err != nil {
         return map[string]interface{}{"status": 500, "res": errorJSON("Server Error", err.Error())}
@@ -65,7 +65,17 @@ func GetUser(c echo.Context) error {
         return c.JSONPretty(authenticated["status"].(int), authenticated["res"], " ")
     }
 
-    return c.JSONPretty(200, createJWT(data), " ") 
+    password := data.Password
+
+    err := db.QueryRow(context.Background(), `SELECT * FROM "user" WHERE email = $1`, data.Email).Scan(&data.ID, &data.Username, &data.Email, &data.Password, &data.History, &data.Favorites, &data.Date, &data.Deleted)
+
+    if err != nil {
+        return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
+    }
+
+    data.Password = password
+
+    return c.JSONPretty(200, createJWT(data)["res"], " ") 
 }
 
 func CreateUser(c echo.Context) error {
@@ -88,7 +98,7 @@ func CreateUser(c echo.Context) error {
         return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
     }
 
-    return c.JSONPretty(200, createJWT(data), " ") 
+    return c.JSONPretty(200, createJWT(data)["res"], " ") 
 }
 
 func UpdateUser(c echo.Context) error {
@@ -110,14 +120,14 @@ func UpdateUser(c echo.Context) error {
         err := db.QueryRow(context.Background(), `UPDATE "user" SET username = $1, email = $2, password = $3, history = $4, favorites = $5, date = $6, deleted = $7 WHERE email = $8`,
             data.Username, data.Email, hashedPassword, data.History, data.Favorites, data.Date, data.Deleted, data.Email).Scan()
 
-        if err != nil && err.Error() != "no rows in result set" {
+        if err != nil {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
         }
     } else {
         return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
     }
 
-    return c.JSONPretty(200, createJWT(data), " ") 
+    return c.JSONPretty(200, createJWT(data)["res"], " ") 
 }
 
 func DeleteUser(c echo.Context) error {
@@ -137,7 +147,7 @@ func DeleteUser(c echo.Context) error {
 
         err := db.QueryRow(context.Background(), `UPDATE "user" SET deleted = $1 WHERE email = $3 RETURNING deleted`, data.Deleted, data.Email).Scan(&res)
 
-        if err != nil && err.Error() != "no rows in result set" {
+        if err != nil {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
         }
     } else {
@@ -173,14 +183,14 @@ func UpdateHistory(c echo.Context) error {
 
         err := db.QueryRow(context.Background(), `UPDATE "user" SET history = $1 WHERE email = $2`, data.History, data.Email).Scan()
 
-        if err != nil && err.Error() != "no rows in result set" {
+        if err != nil {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
         }
     } else {
         return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
     }
 
-    return c.JSONPretty(200, createJWT(data), " ") 
+    return c.JSONPretty(200, createJWT(data)["res"], " ") 
 }
 
 func UpdateFavorites(c echo.Context) error {
@@ -199,12 +209,12 @@ func UpdateFavorites(c echo.Context) error {
 
         err := db.QueryRow(context.Background(), `UPDATE "user" SET favorites = $1 WHERE email = $2`, data.Favorites, data.Email).Scan()
 
-        if err != nil && err.Error() != "no rows in result set" {
+        if err != nil {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
         }
     } else {
         return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
     }
 
-    return c.JSONPretty(200, createJWT(data), " ") 
+    return c.JSONPretty(200, createJWT(data)["res"], " ") 
 }

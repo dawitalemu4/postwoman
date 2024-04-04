@@ -5,7 +5,7 @@ import (
     "os"
 )
 
-func ReadFiles() map[string]string {
+func readFiles() map[string]string {
 
     fileMap := make(map[string]string)
     fileNames := []string{"script.sh"}

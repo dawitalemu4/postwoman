@@ -1,0 +1,70 @@
+{{ define "navbar_profile" }}
+    {{ . }}
+{{ end }}
+
+{{ define "username" }}
+    {{ . }}
+{{ end }}
+
+{{ define "login_response" }}
+    {{ . }}
+{{ end }}
+
+{{ define "signup_response" }}
+    {{ .username }}
+    {{ .email }}
+{{ end }}
+
+{{ define "login" }}
+    <div id="login-container">
+        <form id="login-form">
+            <br />
+            <div>
+                <label for="email">$  email: </label>
+                <input class="login-input" type="text" name="email" placeholder="_" autofocus required />
+            </div>
+            <br />
+            <div>
+                <label for="password">$  password: </label>
+                <input class="login-input" type="password" name="password" placeholder="_" required />
+            </div>
+            <input
+                id="login-submit"
+                type="submit" 
+                hx-post="/api/user/auth" 
+                hx-trigger="[ctrlKey&&enterKey]" 
+                hx-vals="#login-form" 
+            />
+            <div>
+                {{ template "login_response" }}
+            </div>
+        </form>
+    </div>
+{{ end }}
+
+{{ define "signup" }}
+    <div id="signup-container">
+        <form id="signup-form">
+            <br />
+            <div>
+                <label for="email">$  email: </label>
+                <input class="signup-input" type="text" name="email" placeholder="_" autofocus required />
+            </div>
+            <br />
+            <div>
+                <label for="password">$  password: </label>
+                <input class="signup-input" type="password" name="password" placeholder="_" required />
+            </div>
+            <input
+                id="signup-submit"
+                type="submit" 
+                hx-post="/api/user/auth" 
+                hx-trigger="[ctrlKey&&enterKey]" 
+                hx-vals="#signup-form" 
+            />
+            <div>
+                {{ template "signup_response" }}
+            </div>
+        </form>
+    </div>
+{{ end }}
