@@ -12,27 +12,16 @@
 
     {{ $page := index . 1 }}
     {{ $index_active := "" }}
-    {{ $login_active := "" }}
-    {{ $signup_active := "" }}
-    {{ $profile_active := "" }}
 
     {{ if eq $page "index" }}
         {{ $index_active = "navbar-active" }}
-    {{ else if eq $page "login" }}
-        {{ $login_active = "navbar-active" }}
-    {{ else if eq $page "signup" }}
-        {{ $signup_active = "navbar-active" }}
-    {{ else if eq $page "profile" }}
-        {{ $profile_active = "navbar-active" }}
     {{ end }}
 
     <div id="navbar">
         <div>
             <a id="{{ $index_active }}" href="/">home</a>
         </div>
-        <div>
-            {{ template "navbar_profile" }}
-        </div>
+        <div id="navbar-profile"></div>
     </div>
 {{ end }}
 
@@ -46,9 +35,7 @@
             <img src="/public/terminal-buttons.webp" alt="Terminal Buttons Image">
         </div>
         <div id="terminal-console">
-            {{ if eq $page "index" }}
-                {{ template "username" }}
-            {{ else if eq $page "login" }}
+            {{ if eq $page "login" }}
                 {{ template "login" }}
             {{ else if eq $page "signup" }}
                 {{ template "signup" }}

@@ -24,7 +24,7 @@
     margin-left: 10px;
 }
 
-.login-input {
+#login-form div input {
     font-family: CascadiaMono;
     font-size: 16px;
     color: white;
@@ -34,6 +34,6 @@
     border: none !important;
 }
 
-#login-submit {
-    display: none;
+#login-response {
+    margin-left: 15px;
 }

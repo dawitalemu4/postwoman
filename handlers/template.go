@@ -19,7 +19,7 @@ func parseToken(tokenString string) (*models.User, error) {
 
     var claims *models.User
 
-    if tokenString == "empty" {
+    if tokenString == "null" {
         return claims, blankTokenError()
     }
 
@@ -36,22 +36,27 @@ func parseToken(tokenString string) (*models.User, error) {
 
 func RenderNavbar(c echo.Context) error {
 
-    token, err := parseToken(c.Param("token"))
+    pages := map[string]string{"login": "", "signup": "", "profile": ""}
 
-    if err.Error() == emptyError.Error() {
-        return c.Render(200, "navbar_profile", `
-            <a id="{{ $login_active }}" href="/login">login /</a>
-            <a id="{{ $signup_active }}" href="/signup">/ signup</a>
+    token, err := parseToken(c.Param("token"))
+    page := c.Param("page")
+
+    pages[page] = "navbar-active"
+
+    if err != nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, `
+            <a id="` + pages["login"] + `" href="/login">login /</a>
+            <a id="` + pages["signup"] + `" href="/signup">/ signup</a>
         `)
     }
 
     if err != nil {
-        return c.String(500, "Server Error: " + err.Error())
+        return c.HTML(500, "$  Server Error: " + err.Error())
     }
 
-    return c.Render(200, "navbar_profile", `
-        <a id="{{ $profile_active }}" href="/profile">` + token.Username + ` /</a>
-        <a href="/logout">/ logout</a>
+    return c.HTML(200, `
+        <a id="` + pages["profile"] + `" href="/profile">` + token.Username + ` /</a>
+        <a href="/" onclick="localStorage.clear();">/ logout</a>
     `)
 }
 
@@ -59,35 +64,43 @@ func RenderUsername(c echo.Context) error {
 
     token, err := parseToken(c.Param("token"))
 
-    if err.Error() == emptyError.Error() {
-        return c.Render(200, "username", "<p>$  Hello anon! Signup or login to save your request history</p>")
+    if err != nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, "<p>$  Hello anon! Signup or login to save your request history</p>")
     }
 
     if err != nil {
-        return c.String(500, "Server Error: " + err.Error())
+        return c.HTML(500, "$  Server Error: " + err.Error())
     }
 
-    return c.Render(200, "username", "<p>$  Hello " + token.Username + "!</p>")
+    return c.HTML(200, "<p>$  hello " + token.Username + "!</p>")
 }
 
 func RenderLogin(c echo.Context) error {
 
     token, err := parseToken(c.Param("token"))
 
-    if err != nil {
-        return c.String(500, "Server Error: " + err.Error())
+    if err != nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, "<p>$  Incorrect Credentials</p>")
     }
 
-    return c.Render(200, "login_response", "<p>$  Welcome back " + token.Username + "!</p>")
+    if err != nil {
+        return c.HTML(500, "$  Server Error: " + err.Error())
+    }
+
+    return c.HTML(200, "<p>$  welcome back " + token.Username + "!</p>")
 }
 
 func RenderSignup(c echo.Context) error {
 
     token, err := parseToken(c.Param("token"))
 
-    if err != nil {
-        return c.String(500, "Server Error: " + err.Error())
+    if err != nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, "<p>$  Invalid Input</p>")
     }
 
-    return c.Render(200, "signup_response", map[string]interface{}{"username": "<p>$  " + token.Username + "</p>", "email": "<p>$  email: " + token.Email + "</p>"})
+    if err != nil {
+        return c.HTML(500, "$  Server Error: " + err.Error())
+    }
+
+    return c.HTML(200, "<p>$  username: " + token.Username + ", email: " + token.Email + "</p>")
 }

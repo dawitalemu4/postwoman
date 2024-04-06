@@ -1,17 +1,7 @@
-window.onload = async function() {
-    
+window.onload = () => {
+
     const tokenString = localStorage.getItem('auth');
 
-    if (!tokenString) {
-        const navbar = await fetch(`/handle/navbar/empty`);
-        console.log("navbar", navbar);
-        const username = await fetch(`/handle/username/empty`);
-        console.log("username", username);
-    } else {
-        console.log("hi", tokenString);
-        const navbar = await fetch(`/handle/navbar/${tokenString}`);
-        console.log("navbar", navbar);
-        const username = await fetch(`/handle/username/${tokenString}`);
-        console.log("username", username);
-    };
+    htmx.ajax("GET", `/handle/navbar/home/${tokenString}`, { target: "#navbar-profile", swap: "innerHTML" });
+    htmx.ajax("GET", `/handle/username/${tokenString}`, { target: "#terminal-console", swap: "innerHTML" });
 };

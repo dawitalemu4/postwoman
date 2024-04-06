@@ -24,7 +24,7 @@
     margin-left: 10px;
 }
 
-.signup-input {
+#signup-form div input {
     font-family: CascadiaMono;
     font-size: 16px;
     color: white;
@@ -34,6 +34,6 @@
     border: none !important;
 }
 
-#signup-submit {
-    display: none;
+#signup-response {
+    margin-left: 15px;
 }
