@@ -1,43 +1,19 @@
-{{ define "navbar_profile" }}
-    {{ . }}
-{{ end }}
-
-{{ define "username" }}
-    {{ . }}
-{{ end }}
-
-{{ define "login_response" }}
-    {{ . }}
-{{ end }}
-
-{{ define "signup_response" }}
-    {{ .username }}
-    {{ .email }}
-{{ end }}
-
 {{ define "login" }}
     <div id="login-container">
         <form id="login-form">
             <br />
             <div>
                 <label for="email">$  email: </label>
-                <input class="login-input" type="text" name="email" placeholder="_" autofocus required />
+                <input id="login-email" type="text" name="email" placeholder="_" autofocus required />
             </div>
             <br />
             <div>
                 <label for="password">$  password: </label>
-                <input class="login-input" type="password" name="password" placeholder="_" required />
+                <input id="login-password" type="text" name="password" placeholder="_" required />
             </div>
-            <input
-                id="login-submit"
-                type="submit" 
-                hx-post="/api/user/auth" 
-                hx-trigger="[ctrlKey&&enterKey]" 
-                hx-vals="#login-form" 
-            />
-            <div>
-                {{ template "login_response" }}
-            </div>
+            <input type="submit" hidden />
+            <div id="login-response"></div>
+            <div id="login-timer"></div>
         </form>
     </div>
 {{ end }}
@@ -47,24 +23,32 @@
         <form id="signup-form">
             <br />
             <div>
+                <label for="username">$  username: </label>
+                <input id="signup-username" type="text" name="username" placeholder="_" autofocus required />
+            </div>
+            <br />
+            <div>
                 <label for="email">$  email: </label>
-                <input class="signup-input" type="text" name="email" placeholder="_" autofocus required />
+                <input id="signup-email" type="text" name="email" placeholder="_" required />
             </div>
             <br />
             <div>
                 <label for="password">$  password: </label>
-                <input class="signup-input" type="password" name="password" placeholder="_" required />
+                <input id="signup-password" type="text" name="password" placeholder="_" required />
             </div>
-            <input
-                id="signup-submit"
-                type="submit" 
-                hx-post="/api/user/auth" 
-                hx-trigger="[ctrlKey&&enterKey]" 
-                hx-vals="#signup-form" 
-            />
-            <div>
-                {{ template "signup_response" }}
-            </div>
+            <input type="submit" hidden />
+            <div id="signup-response"></div>
+            <div id="signup-timer"></div>
         </form>
+    </div>
+{{ end }}
+
+{{ define "profile" }}
+    <div id="profile-container">
+        <div id="profile-info"></div>
+        <div id="profile-buttons">
+            <button hx-post="/api/user/logout">logout</button>
+            <button hx-delete="/api/user/delete">delete</button>
+        </div>
     </div>
 {{ end }}

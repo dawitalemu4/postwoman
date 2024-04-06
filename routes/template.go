@@ -24,13 +24,14 @@ func TemplateRoutes() *echo.Echo {
         return c.Render(200, "postwoman", map[string]string{"screen": "profile"})
     })
 
+    e.GET("/handle/navbar/:page/:token", handlers.RenderNavbar)
     e.GET("/handle/username/:token", handlers.RenderUsername)
-    e.GET("/handle/navbar/:token", handlers.RenderNavbar)
     e.GET("/handle/login/:token", handlers.RenderLogin)
     e.GET("/handle/signup/:token", handlers.RenderSignup)
 
     e.Static("/public", "views/public")
     e.Static("/robots.txt", "views/public/robots.txt")
+    e.Static("/favicon.ico", "views/public/favicon.ico")
     e.Static("/css", "views/css")
     e.Static("/js", "views/js")
 

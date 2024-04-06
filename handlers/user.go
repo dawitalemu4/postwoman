@@ -69,7 +69,7 @@ func GetUser(c echo.Context) error {
 
     err := db.QueryRow(context.Background(), `SELECT * FROM "user" WHERE email = $1`, data.Email).Scan(&data.ID, &data.Username, &data.Email, &data.Password, &data.History, &data.Favorites, &data.Date, &data.Deleted)
 
-    if err != nil {
+    if err != nil && err.Error() != "no rows in result set" {
         return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
     }
 
@@ -90,6 +90,10 @@ func CreateUser(c echo.Context) error {
         
         err := db.QueryRow(context.Background(), `INSERT INTO "user" (username, email, password, history, favorites, date, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
             data.Username, data.Email, hashedPassword, data.History, data.Favorites, data.Date, data.Deleted).Scan()
+
+        if err.Error() == "ERROR: duplicate key value violates unique constraint \"user_email_key\" (SQLSTATE 23505)" {
+            return c.JSONPretty(404, errorJSON("User Error", "User with this email already exists"), " ")
+        }
 
         if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
