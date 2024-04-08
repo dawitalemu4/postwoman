@@ -32,7 +32,7 @@ func authUser(data models.User) map[string]interface{} {
 func createJWT(data models.User) map[string]interface{} {
 
     dataWithExpiration := &models.User{
-        data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted,
+        data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted, data.OldPw,
         jwt.RegisteredClaims{
             ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 504)),
         },
@@ -68,6 +68,10 @@ func GetUser(c echo.Context) error {
     password := data.Password
 
     err := db.QueryRow(context.Background(), `SELECT * FROM "user" WHERE email = $1`, data.Email).Scan(&data.ID, &data.Username, &data.Email, &data.Password, &data.History, &data.Favorites, &data.Date, &data.Deleted)
+
+    if data.Deleted == true {
+        return c.JSONPretty(404, errorJSON("User Error", "User is deleted"), " ")
+    }
 
     if err != nil && err.Error() != "no rows in result set" {
         return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
@@ -113,18 +117,21 @@ func UpdateUser(c echo.Context) error {
 
     if data.Validated(data) {
 
+        newPassword := data.Password
+        data.Password = data.OldPw
         authenticated := authUser(data)
+        data.Password = newPassword
 
         if authenticated["res"] != true {
             return c.JSONPretty(authenticated["status"].(int), authenticated["res"], " ")
         }
 
         hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
-        
+
         err := db.QueryRow(context.Background(), `UPDATE "user" SET username = $1, email = $2, password = $3, history = $4, favorites = $5, date = $6, deleted = $7 WHERE email = $8`,
             data.Username, data.Email, hashedPassword, data.History, data.Favorites, data.Date, data.Deleted, data.Email).Scan()
 
-        if err != nil {
+        if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
         }
     } else {
@@ -149,7 +156,7 @@ func DeleteUser(c echo.Context) error {
             return c.JSONPretty(authenticated["status"].(int), authenticated["res"], " ")
         }
 
-        err := db.QueryRow(context.Background(), `UPDATE "user" SET deleted = $1 WHERE email = $3 RETURNING deleted`, data.Deleted, data.Email).Scan(&res)
+        err := db.QueryRow(context.Background(), `UPDATE "user" SET deleted = true WHERE email = $1 RETURNING deleted`, data.Email).Scan(&res)
 
         if err != nil {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")

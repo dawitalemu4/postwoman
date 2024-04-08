@@ -1,12 +1,12 @@
 window.onload = () => {
-    
+
     const tokenString = localStorage.getItem('auth');
 
     htmx.ajax("GET", `/handle/navbar/login/${tokenString}`, { target: "#navbar-profile", swap: "innerHTML" });
 };
 
 document.getElementById("login-form").addEventListener("submit", async (e) => {
-    
+
     e.preventDefault();
 
     const email = document.getElementById("login-email").value;
@@ -41,7 +41,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     } else {
 
         htmx.ajax("GET", `/handle/login/null`, { target: "#login-response", swap: "innerHTML" });
-        
+
         setTimeout(() => {
             response.innerHTML = "";
         }, 1500);

@@ -1,0 +1,15 @@
+.new-request > * {
+    font-family: CascadiaMono;
+    font-size: 16px;
+    color: white;
+    margin-bottom: 10px;
+    background-color: black;
+    border: none;
+}
+
+.new-request textarea {
+}
+
+.new-request textarea::-webkit-scrollbar {
+    width: 0;
+}

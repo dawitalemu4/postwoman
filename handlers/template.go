@@ -2,9 +2,12 @@ package handlers
 
 import (
     "errors"
+    "time"
+    "strconv"
 
     "github.com/golang-jwt/jwt/v5"
     "github.com/labstack/echo/v4"
+    "github.com/dustin/go-humanize"
 
     "postwoman/models"
 )
@@ -20,7 +23,7 @@ func parseToken(tokenString string) (*models.User, error) {
     var claims *models.User
 
     if tokenString == "null" {
-        return claims, blankTokenError()
+        return nil, blankTokenError()
     }
 
     token, err := jwt.ParseWithClaims(tokenString, &models.User{}, func(token *jwt.Token) (interface{}, error) {
@@ -56,7 +59,7 @@ func RenderNavbar(c echo.Context) error {
 
     return c.HTML(200, `
         <a id="` + pages["profile"] + `" href="/profile">` + token.Username + ` /</a>
-        <a href="/" onclick="localStorage.clear();">/ logout</a>
+        <a href="/" onclick="localStorage.removeItem("auth");">/ logout</a>
     `)
 }
 
@@ -65,7 +68,7 @@ func RenderUsername(c echo.Context) error {
     token, err := parseToken(c.Param("token"))
 
     if err != nil && err.Error() == emptyError.Error() {
-        return c.HTML(200, "<p>$  Hello anon! Signup or login to save your request history</p>")
+        return c.HTML(200, "<p>$  hello anon! Signup or login to save your request history</p>")
     }
 
     if err != nil {
@@ -80,7 +83,7 @@ func RenderLogin(c echo.Context) error {
     token, err := parseToken(c.Param("token"))
 
     if err != nil && err.Error() == emptyError.Error() {
-        return c.HTML(200, "<p>$  Incorrect Credentials</p>")
+        return c.HTML(200, "<p>$  incorrect credentials</p>")
     }
 
     if err != nil {
@@ -95,12 +98,72 @@ func RenderSignup(c echo.Context) error {
     token, err := parseToken(c.Param("token"))
 
     if err != nil && err.Error() == emptyError.Error() {
-        return c.HTML(200, "<p>$  Invalid Input</p>")
+        return c.HTML(200, "<p>$  invalid input</p>")
     }
 
     if err != nil {
         return c.HTML(500, "$  Server Error: " + err.Error())
     }
 
-    return c.HTML(200, "<p>$  username: " + token.Username + ", email: " + token.Email + "</p>")
+    return c.HTML(200, "<p>$  account created! username: " + token.Username + ", email: " + token.Email + "</p>")
+}
+
+func RenderProfileInfo(c echo.Context) error {
+
+    token, err := parseToken(c.Param("token"))
+    date, _ := strconv.ParseInt(token.Date, 10, 64)
+    userSince := humanize.Time(time.UnixMilli(date));
+
+    if err != nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, "<p>$  invalid token</p>")
+    }
+
+    if err != nil {
+        return c.HTML(500, "$  Server Error: " + err.Error())
+    }
+
+    return c.HTML(200, "<p>$  username: " + token.Username + ", email: " + token.Email + ", user since " + userSince + "</p>")
+}
+
+func RenderProfileUpdate(c echo.Context) error {
+
+    token, err := parseToken(c.Param("token"))
+
+    if err != nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, "<p>$  invalid input</p>")
+    }
+
+    if err != nil {
+        return c.HTML(500, "$  Server Error: " + err.Error())
+    }
+
+    return c.HTML(200, "<p>$  account updated! username: " + token.Username + ", email: " + token.Email + ", password: " + token.Password + "</p>")
+}
+
+func RenderProfileDelete(c echo.Context) error {
+
+    deleted := c.Param("deleted")
+
+    if deleted != "true" {
+        return c.HTML(200, "<p>$  invalid token, try to log back in</p>")
+    }
+
+    return c.HTML(200, "<p>$  deleting account</p>")
+}
+
+func RenderHomeShortcuts(c echo.Context) error {
+
+    token, err := parseToken(c.Param("token"))
+
+    if token == nil && err.Error() == emptyError.Error() {
+        return c.HTML(200, `
+            <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>l</kbd> - login page</div>
+            <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>s</kbd> - signup page</div>
+        `)
+    }
+
+    return c.HTML(200, `
+        <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>p</kbd> - profile page</div>
+        <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>l</kbd> - logout</div>
+    `)
 }
