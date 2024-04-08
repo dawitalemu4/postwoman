@@ -29,9 +29,8 @@
     font-size: 16px;
     color: white;
     margin-left: 10px;
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
+    background-color: transparent;
+    border: none;
 }
 
 #login-response {

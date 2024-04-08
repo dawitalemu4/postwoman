@@ -10,6 +10,7 @@ type User struct {
     Favorites    []int     `json:"favorites"`
     Date         string    `json:"date"`
     Deleted      bool      `json:"deleted"`
+    OldPw        string    `json:"oldPassword"`
     jwt.RegisteredClaims
 }
 
@@ -18,7 +19,6 @@ func (user User) Validated(data User) bool {
     if data.Username != "" &&
         data.Email != "" &&
         data.Password != "" &&
-        data.Date != "" &&
         data.Deleted == false {
 
         return true

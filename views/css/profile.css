@@ -1,11 +1,38 @@
 #profile-container {
-
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
 }
 
 #profile-info {
-
+    margin-left: 10px;
 }
 
-#profile-buttons {
+#profile-form {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+}
 
+#profile-form div {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+}
+
+#profile-form div {
+    margin-left: 10px;
+}
+
+#profile-form div input {
+    font-family: CascadiaMono;
+    font-size: 16px;
+    color: white;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
 }

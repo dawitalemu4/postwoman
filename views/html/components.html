@@ -1,3 +1,28 @@
+{{ define "history-modal" }}
+    <div id="history-modal">
+        <form class="new-request">
+            $  curl -X <select autofocus required>
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="PATCH">PATCH</option>
+                <option value="DELETE">DELETE</option>
+            </select> \ <br />
+            -H '<input type="text" placeholder="headers" />' \ <br />
+            -H '<input type="text" placeholder="origin" />' \ <br />
+            <p>-d '</p><textarea type="text" placeholder="body"></textarea><p>' \ </p><br />
+            <input type="text" placeholder="url" required />
+            <input type="submit" hidden />
+        </form>
+    </div>
+{{ end }}
+
+{{ define "favorites-modal" }}
+    <div id="favorites-modal">
+
+    </div>
+{{ end }}
+
 {{ define "login" }}
     <div id="login-container">
         <form id="login-form">
@@ -45,10 +70,63 @@
 
 {{ define "profile" }}
     <div id="profile-container">
+        <p>$  Profile Info</p>
         <div id="profile-info"></div>
-        <div id="profile-buttons">
-            <button hx-post="/api/user/logout">logout</button>
-            <button hx-delete="/api/user/delete">delete</button>
-        </div>
+        <br />
+        <p>$  Update Profile Info</p>
+        <form id="profile-form">
+            <br />
+            <div>
+                <label for="username">$  username: </label>
+                <input id="profile-username" type="text" name="username" placeholder="_" autofocus required />
+            </div>
+            <br />
+            <div>
+                <label for="password">$  password: </label>
+                <input id="profile-password" type="text" name="password" placeholder="_" required />
+            </div>
+            <input type="submit" hidden />
+            <br />
+            <p onclick="deleteProfile()">$  Delete Account</p>
+            <div id="profile-response"></div>
+            <div id="profile-timer"></div>
+        </form>
     </div>
+{{ end }}
+
+{{ define "index-shortcuts" }}
+    <div><kbd>enter</kbd> - send/select request</div>
+    <div><kbd>tab</kbd> - next text box</div>
+    <div><kbd>shift</kbd> + <kbd>tab</kbd> - previous text box</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>k</kbd> - fill with prev request</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>j</kbd> - empty request</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>h</kbd> - toggle history list</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>f</kbd> - favorite/unfavorite</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>v</kbd> - toggle favorites list</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>d</kbd> - remove request from history</div>
+{{ end }}
+
+{{ define "login-shortcuts" }}
+    <div><kbd>enter</kbd> - login</div>
+    <div><kbd>tab</kbd> - next text box</div>
+    <div><kbd>shift</kbd> + <kbd>tab</kbd> - previous text box</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>h</kbd> - home page</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>s</kbd> - signup page</div>
+{{ end }}
+
+{{ define "signup-shortcuts" }}
+    <div><kbd>enter</kbd> - signup</div>
+    <div><kbd>tab</kbd> - next text box</div>
+    <div><kbd>shift</kbd> + <kbd>tab</kbd> - previous text box</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>h</kbd> - home page</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>l</kbd> - login page</div>
+{{ end }}
+
+{{ define "profile-shortcuts" }}
+    <div><kbd>enter</kbd> - update profile</div>
+    <div><kbd>tab</kbd> - next text box</div>
+    <div><kbd>shift</kbd> + <kbd>tab</kbd> - previous text box</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>d</kbd> - delete account</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>l</kbd> - logout</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>h</kbd> - home page</div>
 {{ end }}

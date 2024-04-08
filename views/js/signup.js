@@ -1,5 +1,5 @@
 window.onload = () => {
-    
+
     const tokenString = localStorage.getItem('auth');
 
     htmx.ajax("GET", `/handle/navbar/signup/${tokenString}`, { target: "#navbar-profile", swap: "innerHTML" });
@@ -53,9 +53,9 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     } else {
 
         response.innerHTML = "<p>$  enter a valid email</p>";
-        
+
         setTimeout(() => {
             response.innerHTML = "";
-        }, 3000);       
+        }, 1500);       
     };
 });

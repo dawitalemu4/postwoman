@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/{{ index . 1 }}.css">
     <script src="/js/{{ index . 1 }}.js" defer></script>
+    <script src="/js/shortcuts.js" defer></script>
     <title>postwoman</title>
 {{ end }}
 
@@ -39,13 +40,35 @@
                 {{ template "login" }}
             {{ else if eq $page "signup" }}
                 {{ template "signup" }}
+            {{ else if eq $page "profile" }}
+                {{ template "profile" }}
             {{ end }}
+            {{ template "history-modal" }}
+            {{ template "favorites-modal" }}
         </div>
     </div>
 {{ end }}
 
 {{ define "shortcuts" }}
+
+    {{ $page := index . 1 }}
+
     <div id="shortcuts">
-            
+        {{ if eq $page "index" }}
+            {{ template "index-shortcuts" }}
+        {{ else if eq $page "login" }}
+            {{ template "login-shortcuts" }}
+        {{ else if eq $page "signup" }}
+            {{ template "signup-shortcuts" }}
+        {{ else if eq $page "profile" }}
+            {{ template "profile-shortcuts" }}
+        {{ end }}           
+    </div>
+{{ end }}
+
+{{ define "demo-cover" }}
+    <div id="demo-cover">
+        <p>don't use your phone to test your api🤦</p>
+        <p>go to <a href="https://postwoman.dev">postwoman.dev</a> for demos, docs, and download guides</p>
     </div>
 {{ end }}

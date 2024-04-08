@@ -18,7 +18,7 @@ html, body {
     display: flex;
     position: relative;
     width: 90%;
-    height: 10vh;
+    height: 10%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -61,7 +61,7 @@ html, body {
     display: flex;
     position: relative;
     width: 80%;
-    height: 80%;
+    height: 75%;
     flex-direction: column;
     border: 2px solid #2f2f2f;
 }
@@ -92,6 +92,7 @@ html, body {
     width: 94%;
     height: 94%;
     padding: 3%;
+    flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     background-color: black;
@@ -100,12 +101,12 @@ html, body {
 }
 
 #terminal-console::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
     background-color: transparent;
 }
 
 #terminal-console::-webkit-scrollbar-thumb {
-    background-color: #ccc;
+    background-color: #28282B;
     border-radius: 25px;
 }
 
@@ -113,13 +114,60 @@ html, body {
     display: flex;
     position: relative;
     width: 90%;
-    height: 10vh;
+    height: 15%;
+    padding-bottom: 5px;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
+}
+
+#shortcuts::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+}
+
+#shortcuts::-webkit-scrollbar-thumb {
+    background-color: #28282B;
+    border-radius: 25px;
+}
+
+#shortcuts div {
+    margin: 0 15px;
+    font-size: 14px;
+}
+
+kbd {
+    padding: 2px 5px;
+    color: black;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 0 1px #ccc;
+    background-color: white;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+}
+
+#demo-cover { 
+    display: none;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: black;
+    z-index: 10;
+} 
+
+#demo-cover a { 
+    color: green;
 }
 
 @media (max-width: 500px) {
-    * { display: none !important; } 
+    #demo-cover { display: flex; } 
 }
 
 @font-face {
