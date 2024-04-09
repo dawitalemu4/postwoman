@@ -1,19 +1,6 @@
 {{ define "history-modal" }}
     <div id="history-modal">
-        <form class="new-request">
-            $  curl -X <select autofocus required>
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-                <option value="PATCH">PATCH</option>
-                <option value="DELETE">DELETE</option>
-            </select> \ <br />
-            -H '<input type="text" placeholder="headers" />' \ <br />
-            -H '<input type="text" placeholder="origin" />' \ <br />
-            <p>-d '</p><textarea type="text" placeholder="body"></textarea><p>' \ </p><br />
-            <input type="text" placeholder="url" required />
-            <input type="submit" hidden />
-        </form>
+
     </div>
 {{ end }}
 

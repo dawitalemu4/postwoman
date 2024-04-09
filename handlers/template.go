@@ -4,6 +4,7 @@ import (
     "errors"
     "time"
     "strconv"
+    "encoding/json"
 
     "github.com/golang-jwt/jwt/v5"
     "github.com/labstack/echo/v4"
@@ -165,5 +166,37 @@ func RenderHomeShortcuts(c echo.Context) error {
     return c.HTML(200, `
         <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>p</kbd> - profile page</div>
         <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>l</kbd> - logout</div>
+    `)
+}
+
+func RenderNewRequest(c echo.Context) error {
+
+    return c.HTML(200, `
+        <form class="new-request">
+            $  curl -X <select autofocus required>
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="PATCH">PATCH</option>
+                <option value="DELETE">DELETE</option>
+            </select> \ <br />
+            -H '<input type="text" placeholder="headers" />' \ <br />
+            -H '<input type="text" placeholder="origin" />' \ <br />
+            -d '<textarea type="text" placeholder="body"></textarea>' \ <br />
+            <input type="text" placeholder="url" required />
+            <input type="submit" hidden />
+        </form>
+        <div class="request-response"></div>
+    `)
+}
+
+func RenderRequestResponse(c echo.Context) error {
+
+    var response models.Request
+
+    json.NewDecoder(c.Request().Body).Decode(&response)
+
+    return c.HTML(200, `
+        <p>$  ` + response.Status + `</p>
     `)
 }

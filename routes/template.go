@@ -25,10 +25,17 @@ func TemplateRoutes() *echo.Echo {
     })
 
     e.GET("/handle/navbar/:page/:token", handlers.RenderNavbar)
+
     e.GET("/handle/username/:token", handlers.RenderUsername)
     e.GET("/handle/shortcut/:token", handlers.RenderHomeShortcuts)
+    e.GET("/handle/request/new", handlers.RenderNewRequest)
+    e.GET("/handle/request/response", handlers.RenderRequestResponse)
+    // e.GET("/handle/request/history", handlers.RenderHistory)
+    // e.GET("/handle/request/favorites", handlers.RenderFavorites)
+
     e.GET("/handle/login/:token", handlers.RenderLogin)
     e.GET("/handle/signup/:token", handlers.RenderSignup)
+
     e.GET("/handle/profile/info/:token", handlers.RenderProfileInfo)
     e.GET("/handle/profile/update/:token", handlers.RenderProfileUpdate)
     e.GET("/handle/profile/delete/:deleted", handlers.RenderProfileDelete)
