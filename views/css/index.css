@@ -1,3 +1,7 @@
+.new-request {
+    width: 100%;
+}
+
 .new-request > * {
     font-family: CascadiaMono;
     font-size: 16px;
@@ -8,8 +12,16 @@
 }
 
 .new-request textarea {
+    width: 70%;
+    min-width: 270px;
+    max-width: 500px;
+    height: 100px;
+    resize: none;
+    margin-bottom: -90px;
+    overflow: auto;
+    scrollbar-width: none;
 }
 
-.new-request textarea::-webkit-scrollbar {
-    width: 0;
+.new-request input:nth-last-of-type(2) {
+    margin-top: 100px;
 }
