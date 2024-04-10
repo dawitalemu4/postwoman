@@ -1,9 +1,9 @@
 CREATE TABLE request (
     id SERIAL PRIMARY KEY,
-    user_email TEXT,
+    user_email TEXT NOT NULL,
     url TEXT NOT NULL,
     method TEXT NOT NULL,
-    origin TEXT NOT NULL,
+    origin TEXT,
     headers TEXT,
     body TEXT,
     status TEXT NOT NULL,
@@ -26,3 +26,5 @@ ALTER TABLE request
 ADD CONSTRAINT fk_request_user_email
 FOREIGN KEY (user_email)
 REFERENCES "user"(email);
+
+INSERT INTO "user" (username, email, password, date, deleted) VALUES ('anon', 'null', 'anon', '', false);
