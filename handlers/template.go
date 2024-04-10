@@ -4,7 +4,6 @@ import (
     "errors"
     "time"
     "strconv"
-    "encoding/json"
 
     "github.com/golang-jwt/jwt/v5"
     "github.com/labstack/echo/v4"
@@ -55,7 +54,7 @@ func RenderNavbar(c echo.Context) error {
     }
 
     if err != nil {
-        return c.HTML(500, "$  Server Error: " + err.Error())
+        return c.HTML(500, "<p>$  Server Error: " + err.Error() + "</p>")
     }
 
     return c.HTML(200, `
@@ -73,7 +72,7 @@ func RenderUsername(c echo.Context) error {
     }
 
     if err != nil {
-        return c.HTML(500, "$  Server Error: " + err.Error())
+        return c.HTML(500, "<p>$  Server Error: " + err.Error() + "</p>")
     }
 
     return c.HTML(200, "<p>$  hello " + token.Username + "!</p>")
@@ -88,7 +87,7 @@ func RenderLogin(c echo.Context) error {
     }
 
     if err != nil {
-        return c.HTML(500, "$  Server Error: " + err.Error())
+        return c.HTML(500, "<p>$  Server Error: " + err.Error() + "</p>")
     }
 
     return c.HTML(200, "<p>$  welcome back " + token.Username + "!</p>")
@@ -103,7 +102,7 @@ func RenderSignup(c echo.Context) error {
     }
 
     if err != nil {
-        return c.HTML(500, "$  Server Error: " + err.Error())
+        return c.HTML(500, "<p>$  Server Error: " + err.Error() + "</p>")
     }
 
     return c.HTML(200, "<p>$  account created! username: " + token.Username + ", email: " + token.Email + "</p>")
@@ -120,7 +119,7 @@ func RenderProfileInfo(c echo.Context) error {
     }
 
     if err != nil {
-        return c.HTML(500, "$  Server Error: " + err.Error())
+        return c.HTML(500, "<p>$  Server Error: " + err.Error() + "</p>")
     }
 
     return c.HTML(200, "<p>$  username: " + token.Username + ", email: " + token.Email + ", user since " + userSince + "</p>")
@@ -135,7 +134,7 @@ func RenderProfileUpdate(c echo.Context) error {
     }
 
     if err != nil {
-        return c.HTML(500, "$  Server Error: " + err.Error())
+        return c.HTML(500, "<p>$  Server Error: " + err.Error() + "</p>")
     }
 
     return c.HTML(200, "<p>$  account updated! username: " + token.Username + ", email: " + token.Email + ", password: " + token.Password + "</p>")
@@ -171,32 +170,28 @@ func RenderHomeShortcuts(c echo.Context) error {
 
 func RenderNewRequest(c echo.Context) error {
 
+    email := c.Param("email")
+
     return c.HTML(200, `
-        <form class="new-request">
-            $  curl -X <select autofocus required>
+        <form class="new-request"
+            hx-post="/curl/request"
+            hx-target=".request-response:last-child"
+            hx-ext="json-enc"
+        >
+            $  curl -X <select name="method" autofocus required>
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
                 <option value="PUT">PUT</option>
                 <option value="PATCH">PATCH</option>
                 <option value="DELETE">DELETE</option>
             </select> \ <br />
-            -H '<input type="text" placeholder="headers" />' \ <br />
-            -H '<input type="text" placeholder="origin" />' \ <br />
-            -d '<textarea type="text" placeholder="body"></textarea>' \ <br />
-            <input type="text" placeholder="url" required />
+            -H '<input name="headers" type="text" placeholder="headers" />' \ <br />
+            -H '<input name="origin" type="text" placeholder="origin" />' \ <br />
+            -d '<textarea name="body" type="text" placeholder="body"></textarea>' \ <br />
+            <input name="url" type="text" placeholder="url" required />
+            <input name="user_email" value="` + email + `" hidden />
             <input type="submit" hidden />
         </form>
         <div class="request-response"></div>
-    `)
-}
-
-func RenderRequestResponse(c echo.Context) error {
-
-    var response models.Request
-
-    json.NewDecoder(c.Request().Body).Decode(&response)
-
-    return c.HTML(200, `
-        <p>$  ` + response.Status + `</p>
     `)
 }

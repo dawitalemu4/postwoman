@@ -14,7 +14,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const response = document.getElementById("login-response");
     const timer = document.getElementById("login-timer");
 
-    const authReq = await fetch("/api/user/auth", { method: "POST", body: JSON.stringify({"email": email, "password": password, "username": "doesntmatter", "date": "doesntmatter", "deleted": false}) });
+    const authReq = await fetch("/api/user/auth", { method: "POST", body: JSON.stringify({ "email": email, "password": password, "username": "doesntmatter", "date": "doesntmatter", "deleted": false })});
     const authenticated = await authReq.json();
 
     if (typeof authenticated === "string" && authenticated.length > 0) {
