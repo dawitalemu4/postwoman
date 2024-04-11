@@ -3,7 +3,7 @@
 }
 
 .new-request > * {
-    /* width: 60%; */
+    width: 60%;
     font-family: CascadiaMono;
     font-size: 16px;
     color: white;
@@ -11,6 +11,8 @@
     background-color: black;
     border: none;
 }
+
+.new-request select { width: 100px; }
 
 .new-request textarea {
     width: 70%;
@@ -28,5 +30,23 @@
 }
 
 .request-response {
-    /* width: 70%; */
+    width: 100%;
+}
+
+.response-textarea {
+    width: 99%;
+    height: 250px;
+    font-family: CascadiaMono;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 10px;
+    background-color: black;
+    border: none;
+    scrollbar-width: none;
+    resize: none;
+}
+
+pre { 
+    display: inline; 
+    margin: 0;
 }

@@ -25,3 +25,14 @@ window.onload = () => {
         htmx.ajax("GET", `/handle/request/new/${email}`, { target: "#terminal-console", swap: "beforeend" });
     }, 1200);
 };
+
+const dots = () => {
+
+    const requestResponse = document.getElementsByClassName('request-response')[0];
+
+    requestResponse.innerHTML = '$  curling...';
+};
+
+const showHistory = () => {};
+
+const showFavorites = () => {};
