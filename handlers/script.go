@@ -2,33 +2,38 @@ package handlers
 
 import (
     "os/exec"
-    "encoding/json"
-    "time"
     "strconv"
+    "time"
+    "encoding/json"
+    "regexp"
 
     "github.com/labstack/echo/v4"
 
     "postwoman/models"
 )
 
-func checkArgs(request models.Request) (string, error) {
-    
-    if request.Method != "" && request.Headers != "" && request.Origin != "" && request.Body != "" {
-        response, err := exec.Command("curl", "-v", "-X", request.Method, "-H", request.Headers, "-H", `' Origin: ` + request.Origin + `'`, "-d", `'` + request.Body + `'`, request.Url).Output()
-        return string(response), err
-    } else if request.Method != "" && request.Headers != "" && request.Origin != "" {
-        response, err := exec.Command("curl", "-v", "-X", request.Method, "-H", request.Headers, "-H", `' Origin: ` + request.Origin + `'`, request.Url).Output()
-        return string(response), err
-    } else if request.Method != "" && request.Headers != "" {
-        response, err := exec.Command("curl", "-v", "-X", request.Method, "-H", `'` + request.Headers + `'`, request.Url).Output()
-        return string(response), err
-    } else if request.Method != "" {
-        response, err := exec.Command("curl", "-v", "-X", request.Method, request.Url).Output()
-        return string(response), err
+func buildCommand(request models.Request) []string {
+
+    command := []string{"curl", "-v"}
+
+    if request.Method != "" {
+        command = append(command, "-X", request.Method)
     }
-    
-    response, err := exec.Command("curl", "-v", request.Url).Output()
-    return string(response), err
+
+    if request.Headers != "" {
+        command = append(command, "-H", `'` + request.Headers + `'`)
+    }
+
+    if request.Origin != "" {
+        command = append(command, "-H", `'Origin: ` + request.Origin + `'`)
+    }
+
+    if request.Body != "" {
+        command = append(command, "-d", `'` + request.Body + `'`)
+    }
+
+    command = append(command, request.Url)
+    return command
 }
 
 func ExecuteCurlRequest(c echo.Context) error {
@@ -37,20 +42,35 @@ func ExecuteCurlRequest(c echo.Context) error {
 
     json.NewDecoder(c.Request().Body).Decode(&request)
 
-    response, err := checkArgs(request)
-
-    if err != nil {
-        return c.HTML(200, "<p>$  Server Error: " + err.Error() + "</p>")
-    }
+    command := buildCommand(request)
+    response, err := exec.Command(command[0], command[1:]...).Output()
 
     request.Status = "200"
     request.Date = strconv.FormatInt(time.Now().UTC().UnixMilli(), 10)
     request.Hidden = false
 
-    stringRequest, err := json.Marshal(request)
+    stringRequest, _ := json.Marshal(request)
 
-    exec.Command("curl", "-X", "POST", "-d", string(stringRequest), "http://localhost:1323/api/request/new/" + request.User_email).Output()
-    exec.Command("curl", "http://localhost:1323/handle/request/new/" + request.User_email).Output()
+    exec.Command("curl", "-X", "POST", "-d", string(stringRequest), "http://localhost:13234/api/request/new/" + request.User_email).Output()
 
-    return c.HTML(200, "<p>$  " + response + "</p>")
+    errorResponseRegex := regexp.MustCompile(`<title>(?s).*Error.*<\/title>`)
+    if errorMatch := errorResponseRegex.FindStringSubmatch(string(response)); errorMatch != nil || err != nil {
+
+        preTagRegex := regexp.MustCompile(`<pre>(?s).*?<\/pre>`)
+        match := preTagRegex.FindStringSubmatch(string(response))
+
+        if match == nil {
+
+            if err.Error() == "exit status 6" {
+                return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid url</p>")
+            }
+
+            return c.HTML(200, "<p>$  error: " + err.Error() + "<br />response: " + string(response) + "</p>")
+
+        } else {
+            return c.HTML(200, "$  error: " + match[0])
+        }
+    }
+
+    return c.HTML(200, `<textarea class="response-textarea" readonly>` + string(response) + `</textarea>`)
 }

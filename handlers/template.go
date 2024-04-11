@@ -176,7 +176,9 @@ func RenderNewRequest(c echo.Context) error {
         <form class="new-request"
             hx-post="/curl/request"
             hx-target=".request-response:last-child"
+            hx-swap="innerHTML"
             hx-ext="json-enc"
+            hx-on::before-request="dots()"
         >
             $  curl -X <select name="method" autofocus required>
                 <option value="GET">GET</option>
