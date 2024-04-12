@@ -4,6 +4,9 @@ import (
     "errors"
     "time"
     "strconv"
+    "os/exec"
+    "encoding/json"
+    "bytes"
 
     "github.com/golang-jwt/jwt/v5"
     "github.com/labstack/echo/v4"
@@ -68,7 +71,7 @@ func RenderUsername(c echo.Context) error {
     token, err := parseToken(c.Param("token"))
 
     if err != nil && err.Error() == emptyError.Error() {
-        return c.HTML(200, "<p>$  hello anon! Signup or login to save your request history</p>")
+        return c.HTML(200, "<p>$  hello anon! Signup or login to save your favorite requests and organize your request history in your own profiles</p>")
     }
 
     if err != nil {
@@ -173,9 +176,9 @@ func RenderNewRequest(c echo.Context) error {
     email := c.Param("email")
 
     return c.HTML(200, `
-        <form class="new-request"
+        <form id="new-request"
             hx-post="/curl/request"
-            hx-target=".request-response:last-child"
+            hx-target="#request-response"
             hx-swap="innerHTML"
             hx-ext="json-enc"
             hx-on::before-request="dots()"
@@ -194,6 +197,87 @@ func RenderNewRequest(c echo.Context) error {
             <input name="user_email" value="` + email + `" hidden />
             <input type="submit" hidden />
         </form>
-        <div class="request-response"></div>
+        <div id="request-response"></div>
     `)
+}
+
+func RenderHistoryList(c echo.Context) error {
+
+    var historyList []models.Request
+    var htmlHistoryList string
+    statusColors := map[string]string{"1": "green", "2": "green", "3": "yellow", "4": "red", "5": "orange"}
+
+    email := c.Param("email")
+
+    historyListResponse, _ := exec.Command("curl", "http://localhost:13234/api/request/all/" + email).Output()
+    json.NewDecoder(bytes.NewReader(historyListResponse)).Decode(&historyList)
+
+    if len(historyList) == 0 {
+        return c.HTML(200, `<br /><p style="margin-left:15px;">$  no history</p>`)
+    }
+
+    for i, request := range historyList {
+
+        int64Date, _ := strconv.ParseInt(request.Date, 10, 64)
+
+        if request.Hidden == false {
+
+            request.Date = humanize.Time(time.UnixMilli(int64Date))
+
+            htmlHistoryList += `
+                <div class="history-item" tabindex="` + strconv.Itoa(i+1) + `" value="` + strconv.Itoa(request.ID) + `">
+                    <div class="history-item-left-container">
+                        <p style="color: ` + statusColors[request.Status[0:1]] + `;font-size:18px;">` + request.Status + `</p>
+                        <p>` + request.Method + `</p>
+                    </div>
+                    <div class="history-item-right-container">
+                        <p>` + request.Url + `</p>
+                        <p>` + request.Date + `</p>
+                    </div>
+                </div>
+            `
+        }
+    }
+
+    return c.HTML(200, htmlHistoryList)
+}
+
+func RenderFavoritesList(c echo.Context) error {
+
+    var favoritesList []models.Request
+    var htmlFavoritesList string
+    statusColors := map[string]string{"1": "green", "2": "green", "3": "yellow", "4": "red", "5": "orange"}
+
+    email := c.Param("email")
+
+    favoritesListResponse, _ := exec.Command("curl", "http://localhost:13234/api/request/favorites/" + email).Output()
+    json.NewDecoder(bytes.NewReader(favoritesListResponse)).Decode(&favoritesList)
+
+    if len(favoritesList) == 0 {
+        return c.HTML(200, `<br /><p style="margin-left:15px;">$  no favorites</p>`)
+    }
+
+    for i, request := range favoritesList {
+
+        int64Date, _ := strconv.ParseInt(request.Date, 10, 64)
+
+        if request.Hidden == false {
+
+            request.Date = humanize.Time(time.UnixMilli(int64Date))
+
+            htmlFavoritesList += `
+                <div class="history-item" tabindex="` + strconv.Itoa(i+1) + `" value="` + strconv.Itoa(request.ID) + `">
+                    <div class="history-item-left-container">
+                        <p style="color: ` + statusColors[request.Status[0:1]] + `;font-size:18px;">` + request.Status + `</p>
+                        <p>` + request.Method + `</p>
+                    </div>
+                    <div class="history-item-right-container">
+                        <p>` + request.Url + `</p>
+                        <p>` + request.Date + `</p>
+                    </div>
+                </div>
+            `
+        }
+    }
+    return c.HTML(200, htmlFavoritesList)
 }

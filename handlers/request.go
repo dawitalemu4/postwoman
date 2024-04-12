@@ -2,6 +2,7 @@ package handlers
 
 import (
     "context"
+    "strings"
     "encoding/json"
 
     "github.com/labstack/echo/v4"
@@ -15,7 +16,34 @@ func GetAllRequests(c echo.Context) error {
 
     email := c.Param("email")
 
-    res, err := pgxscan.All(context.Background(), db, scan.StructMapper[models.Request](), "SELECT * FROM request WHERE user_email = $1 AND hidden = false", email)
+    res, err := pgxscan.All(context.Background(), db, scan.StructMapper[models.Request](), "SELECT * FROM request WHERE user_email = $1 AND hidden = false ORDER BY id DESC", email)
+
+    if err != nil {
+        return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
+    }
+
+    if len(res) == 0 {
+        return c.JSONPretty(404, errorJSON("User Error", "No requests found from this user email"), " ")
+    }
+
+    return c.JSONPretty(200, res, " ")
+}
+
+func GetAllFavoriteRequests(c echo.Context) error {
+
+    var res []models.Request
+    var request models.Request
+    var err error 
+    email := c.Param("email")
+    favoriteIDs := c.Param("favoriteIDs")
+
+    for _, id := range strings.Split(favoriteIDs, ",") {
+
+        err = db.QueryRow(context.Background(), "SELECT * FROM request WHERE user_email = $1 AND id = $2 AND hidden = false ORDER BY id DESC", email, id).Scan(
+            &request.ID, &request.User_email, &request.Url, &request.Method, &request.Origin, &request.Headers, &request.Body, &request.Status, &request.Date, &request.Hidden)
+    
+        res = append(res, request)
+    }
 
     if err != nil {
         return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")

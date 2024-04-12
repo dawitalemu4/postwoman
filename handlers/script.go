@@ -1,10 +1,10 @@
 package handlers
 
 import (
+    "encoding/json"
     "os/exec"
     "strconv"
     "time"
-    "encoding/json"
     "regexp"
 
     "github.com/labstack/echo/v4"
@@ -45,7 +45,18 @@ func ExecuteCurlRequest(c echo.Context) error {
     command := buildCommand(request)
     response, err := exec.Command(command[0], command[1:]...).Output()
 
-    request.Status = "200"
+    if err != nil && err.Error() == "exit status 6" {
+        return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid url</p>")
+    }
+
+    headersCmd := append(command[:1], append([]string{"-LI"}, command[1:]...)...)
+    headers, _ := exec.Command(headersCmd[0], headersCmd[1:]...).Output()
+
+    statusRegex := regexp.MustCompile(`HTTP\/\d\.\d\s(\d{3})`)
+    statusMatch := statusRegex.FindStringSubmatch(string(headers))
+    splicedStatus := statusMatch[0][len(statusMatch[0])-3:]
+
+    request.Status = splicedStatus 
     request.Date = strconv.FormatInt(time.Now().UTC().UnixMilli(), 10)
     request.Hidden = false
 
@@ -57,20 +68,18 @@ func ExecuteCurlRequest(c echo.Context) error {
     if errorMatch := errorResponseRegex.FindStringSubmatch(string(response)); errorMatch != nil || err != nil {
 
         preTagRegex := regexp.MustCompile(`<pre>(?s).*?<\/pre>`)
-        match := preTagRegex.FindStringSubmatch(string(response))
+        preTagMatch := preTagRegex.FindStringSubmatch(string(response))
 
-        if match == nil {
-
-            if err.Error() == "exit status 6" {
-                return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid url</p>")
-            }
-
-            return c.HTML(200, "<p>$  error: " + err.Error() + "<br />response: " + string(response) + "</p>")
-
+        if preTagMatch == nil {
+            return c.HTML(200, "<p>$  error: " + err.Error() + "<br /><br />status: " + splicedStatus + "response: " + string(response) + "</p>")
         } else {
-            return c.HTML(200, "$  error: " + match[0])
+            return c.HTML(200, "$  error: " + preTagMatch[0] + "<br /><br />status: " + splicedStatus)
         }
     }
 
-    return c.HTML(200, `<textarea class="response-textarea" readonly>` + string(response) + `</textarea>`)
+    return c.HTML(200, `
+        $  status: ` + splicedStatus + `
+        <br /><br />
+        <textarea id="response-textarea" readonly>` + string(response) + `&#013;</textarea>
+    `)
 }
