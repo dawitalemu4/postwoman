@@ -1,8 +1,8 @@
-.new-request {
+#new-request {
     width: 100%;
 }
 
-.new-request > * {
+#new-request > * {
     width: 60%;
     font-family: CascadiaMono;
     font-size: 16px;
@@ -12,9 +12,11 @@
     border: none;
 }
 
-.new-request select { width: 100px; }
+#new-request select {
+    width: 100px;
+}
 
-.new-request textarea {
+#new-request textarea {
     width: 70%;
     min-width: 270px;
     max-width: 500px;
@@ -25,21 +27,21 @@
     scrollbar-width: none;
 }
 
-.new-request input:nth-last-of-type(3) {
+#new-request input:nth-last-of-type(3) {
     margin-top: 100px;
 }
 
-.request-response {
+#request-response {
     width: 100%;
 }
 
-.response-textarea {
-    width: 99%;
-    height: 250px;
+#response-textarea {
+    display: table;
+    width: 100%;
+    margin-bottom: 20px;
     font-family: CascadiaMono;
     font-size: 14px;
     color: white;
-    margin-bottom: 10px;
     background-color: black;
     border: none;
     scrollbar-width: none;
@@ -49,4 +51,63 @@
 pre { 
     display: inline; 
     margin: 0;
+}
+
+#history-modal, #favorites-modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    background-color: black;
+    z-index: 2;
+}
+
+.history-item, .favorites-item {
+    display: flex;
+    position: relative;
+    width: calc(100% - 6px);
+    height: 120px;
+    margin-top: 1px;
+    margin-left: 3px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: CascadiaMono;
+    font-size: 14px;
+    color: white;
+    background-color: black;
+    scrollbar-width: none;
+    border-bottom: 1px solid white;
+}
+
+.history-item:focus, .favorites-item:focus {
+    border: 1px solid white;
+}
+
+.history-item-left-container, .favorites-item-left-container {
+    display: flex;
+    position: relative;
+    width: 20%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.history-item-right-container, .favorites-item-right-container {
+    display: flex;
+    position: relative;
+    width: 80%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.history-item div p, .favorites-item div p {
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

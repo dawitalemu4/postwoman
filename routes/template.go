@@ -29,8 +29,8 @@ func TemplateRoutes() *echo.Echo {
     e.GET("/handle/username/:token", handlers.RenderUsername)
     e.GET("/handle/shortcut/:token", handlers.RenderHomeShortcuts)
     e.GET("/handle/request/new/:email", handlers.RenderNewRequest)
-    // e.GET("/handle/request/history", handlers.RenderHistory)
-    // e.GET("/handle/request/favorites", handlers.RenderFavorites)
+    e.GET("/handle/request/history/:email", handlers.RenderHistoryList)
+    e.GET("/handle/request/favorites/:email", handlers.RenderFavoritesList)
 
     e.POST("/curl/request", handlers.ExecuteCurlRequest)
 

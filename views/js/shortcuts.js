@@ -1,7 +1,6 @@
 const currentPage = window.location.pathname;
 
 const shortuctKeys = {
-    "fill": "KeyK",
     "empty": "KeyJ",
     "history": "KeyH",
     "toggleFavorite": "KeyF",
@@ -17,6 +16,7 @@ const shortuctKeys = {
 };
 
 const homeKeys = [
+    shortuctKeys["empty"],
     shortuctKeys["history"],
     shortuctKeys["toggleFavorite"],
     shortuctKeys["viewFavorites"],
@@ -48,18 +48,16 @@ const executeHomeShortcuts = (shortcut) => {
 
     const loggedIn = localStorage.getItem("auth");
 
-    if (shortcut === shortuctKeys["fill"]) {
-
-    } else if (shortcut === shortuctKeys["empty"]) {
-    
+    if (shortcut === shortuctKeys["empty"]) {
+        emptyForm();
     } else if (shortcut === shortuctKeys["history"]) {
-    
+        toggleHistoryList();
     } else if (shortcut === shortuctKeys["toggleFavorite"]) {
-
+        toggleFavoriteItem();
     } else if (shortcut === shortuctKeys["viewFavorites"]) {
-
+        toggleFavoritesList();
     } else if (shortcut === shortuctKeys["hideRequest"]) {
-    
+        hideRequest();
     } else if (shortcut === shortuctKeys["closeModal"]) {
         document.getElementById("history-modal").style.display = "none";
         document.getElementById("favorites-modal").style.display = "none";
