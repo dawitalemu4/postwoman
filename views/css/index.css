@@ -111,3 +111,15 @@ pre {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.removed-favorite, .added-favorite {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+}

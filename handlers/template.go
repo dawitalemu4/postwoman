@@ -225,7 +225,7 @@ func RenderHistoryList(c echo.Context) error {
             request.Date = humanize.Time(time.UnixMilli(int64Date))
 
             htmlHistoryList += `
-                <div class="history-item" tabindex="` + strconv.Itoa(i+1) + `" value="` + strconv.Itoa(request.ID) + `">
+                <div class="history-item" tabindex="` + strconv.Itoa(i+1) + `" id="` + strconv.Itoa(request.ID) + `">
                     <div class="history-item-left-container">
                         <p style="color: ` + statusColors[request.Status[0:1]] + `;font-size:18px;">` + request.Status + `</p>
                         <p>` + request.Method + `</p>
@@ -234,6 +234,8 @@ func RenderHistoryList(c echo.Context) error {
                         <p>` + request.Url + `</p>
                         <p>` + request.Date + `</p>
                     </div>
+                    <div class="added-favorite">added to favorites</div>
+                    <div class="removed-favorite">removed from favorites</div>
                 </div>
             `
         }
@@ -266,15 +268,17 @@ func RenderFavoritesList(c echo.Context) error {
             request.Date = humanize.Time(time.UnixMilli(int64Date))
 
             htmlFavoritesList += `
-                <div class="history-item" tabindex="` + strconv.Itoa(i+1) + `" value="` + strconv.Itoa(request.ID) + `">
-                    <div class="history-item-left-container">
+                <div class="favorites-item" tabindex="` + strconv.Itoa(i+1) + `" id="` + strconv.Itoa(request.ID) + `">
+                    <div class="favorites-item-left-container">
                         <p style="color: ` + statusColors[request.Status[0:1]] + `;font-size:18px;">` + request.Status + `</p>
                         <p>` + request.Method + `</p>
                     </div>
-                    <div class="history-item-right-container">
+                    <div class="favorites-item-right-container">
                         <p>` + request.Url + `</p>
                         <p>` + request.Date + `</p>
                     </div>
+                    <div class="added-favorite">added to favorites</div>
+                    <div class="removed-favorite">removed from favorites</div>
                 </div>
             `
         }
