@@ -220,7 +220,7 @@ func UpdateFavorites(c echo.Context) error {
 
         err := db.QueryRow(context.Background(), `UPDATE "user" SET favorites = $1 WHERE email = $2`, data.Favorites, data.Email).Scan()
 
-        if err != nil {
+        if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
         }
     } else {
