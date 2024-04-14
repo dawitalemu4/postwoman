@@ -32,7 +32,7 @@ func authUser(data models.User) map[string]interface{} {
 func createJWT(data models.User) map[string]interface{} {
 
     dataWithExpiration := &models.User{
-        data.Username, data.Email, data.Password, data.History, data.Favorites, data.Date, data.Deleted, data.OldPw,
+        data.Username, data.Email, data.Password, data.Favorites, data.Date, data.Deleted, data.OldPw,
         jwt.RegisteredClaims{
             ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 504)),
         },
@@ -67,7 +67,7 @@ func GetUser(c echo.Context) error {
 
     password := data.Password
 
-    err := db.QueryRow(context.Background(), `SELECT * FROM "user" WHERE email = $1`, data.Email).Scan(&data.ID, &data.Username, &data.Email, &data.Password, &data.History, &data.Favorites, &data.Date, &data.Deleted)
+    err := db.QueryRow(context.Background(), `SELECT * FROM "user" WHERE email = $1`, data.Email).Scan(&data.ID, &data.Username, &data.Email, &data.Password, &data.Favorites, &data.Date, &data.Deleted)
 
     if data.Deleted == true {
         return c.JSONPretty(404, errorJSON("User Error", "User is deleted"), " ")
@@ -91,9 +91,9 @@ func CreateUser(c echo.Context) error {
     if data.Validated(data) {
 
         hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
-        
-        err := db.QueryRow(context.Background(), `INSERT INTO "user" (username, email, password, history, favorites, date, deleted) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            data.Username, data.Email, hashedPassword, data.History, data.Favorites, data.Date, data.Deleted).Scan()
+
+        err := db.QueryRow(context.Background(), `INSERT INTO "user" (username, email, password, favorites, date, deleted) VALUES ($1, $2, $3, $4, $5, $6)`,
+            data.Username, data.Email, hashedPassword, data.Favorites, data.Date, data.Deleted).Scan()
 
         if err.Error() == "ERROR: duplicate key value violates unique constraint \"user_email_key\" (SQLSTATE 23505)" {
             return c.JSONPretty(404, errorJSON("User Error", "User with this email already exists"), " ")
@@ -128,8 +128,8 @@ func UpdateUser(c echo.Context) error {
 
         hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
 
-        err := db.QueryRow(context.Background(), `UPDATE "user" SET username = $1, email = $2, password = $3, history = $4, favorites = $5, date = $6, deleted = $7 WHERE email = $8`,
-            data.Username, data.Email, hashedPassword, data.History, data.Favorites, data.Date, data.Deleted, data.Email).Scan()
+        err := db.QueryRow(context.Background(), `UPDATE "user" SET username = $1, email = $2, password = $3, favorites = $4, date = $5, deleted = $6 WHERE email = $7`,
+            data.Username, data.Email, hashedPassword, data.Favorites, data.Date, data.Deleted, data.Email).Scan()
 
         if err != nil && err.Error() != "no rows in result set" {
             return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
@@ -166,42 +166,6 @@ func DeleteUser(c echo.Context) error {
     }
 
     return c.JSONPretty(200, res, " ")
-}
-
-func UpdateHistory(c echo.Context) error {
-
-    var data models.User
-    remove := c.QueryParam("remove")
-
-    json.NewDecoder(c.Request().Body).Decode(&data)
-
-    if data.Validated(data) {
-
-        if remove == "true" {
-            
-            hidden := HideRequest(c, data.Email)
-
-            if hidden["res"] != "successful" {
-                return c.JSONPretty(hidden["status"].(int), hidden["res"], " ")
-            }
-        }
-
-        authenticated := authUser(data)
-
-        if authenticated["res"] != true {
-            return c.JSONPretty(authenticated["status"].(int), authenticated["res"], " ")
-        }
-
-        err := db.QueryRow(context.Background(), `UPDATE "user" SET history = $1 WHERE email = $2`, data.History, data.Email).Scan()
-
-        if err != nil {
-            return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
-        }
-    } else {
-        return c.JSONPretty(404, errorJSON("User Error", "Invalid data"), " ")
-    }
-
-    return c.JSONPretty(200, createJWT(data)["res"], " ") 
 }
 
 func UpdateFavorites(c echo.Context) error {

@@ -38,7 +38,6 @@ document.getElementById("profile-form").addEventListener("submit", async (e) => 
         "username": username.value,
         "email": profile.email,
         "password": password.value,
-        "history": profile.history,
         "favorites": profile.favorites,
         "date": profile.date,
         "deleted": false,

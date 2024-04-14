@@ -2,7 +2,7 @@ package routes
 
 import (
     "github.com/labstack/echo/v4"
-    
+
     "postwoman/handlers"
 )
 
@@ -13,7 +13,6 @@ func UserRoutes() *echo.Echo {
     e.PUT("/api/user/update", handlers.UpdateUser)
     e.DELETE("/api/user/delete", handlers.DeleteUser)
 
-    e.PATCH("/api/user/history/:reqID", handlers.UpdateHistory)
     e.PATCH("/api/user/favorites", handlers.UpdateFavorites)
 
     return e

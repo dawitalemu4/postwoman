@@ -9,7 +9,7 @@ import (
 func ConfigGlobalRoutes() *echo.Echo {
 
     e := echo.New()
-    
+
     e.Renderer = handlers.RenderTemplate()
 
     // e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
