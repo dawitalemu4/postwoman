@@ -181,7 +181,7 @@ func RenderNewRequest(c echo.Context) error {
             hx-target="#request-response"
             hx-swap="innerHTML"
             hx-ext="json-enc"
-            hx-on::before-request="dots()"
+            hx-on::before-request="loading()"
         >
             $  curl -X <select name="method" autofocus required>
                 <option value="GET">GET</option>
@@ -236,6 +236,8 @@ func RenderHistoryList(c echo.Context) error {
                     </div>
                     <div class="added-favorite">added to favorites</div>
                     <div class="removed-favorite">removed from favorites</div>
+                    <div class="not-loggedin">log in to save favorites</div>
+                    <div class="deleted-item">deleted item</div>
                 </div>
             `
         }
@@ -263,7 +265,7 @@ func RenderFavoritesList(c echo.Context) error {
 
         int64Date, _ := strconv.ParseInt(request.Date, 10, 64)
 
-        if request.Hidden == false {
+        if request.Hidden == false && request.ID != 0 {
 
             request.Date = humanize.Time(time.UnixMilli(int64Date))
 
@@ -279,6 +281,7 @@ func RenderFavoritesList(c echo.Context) error {
                     </div>
                     <div class="added-favorite">added to favorites</div>
                     <div class="removed-favorite">removed from favorites</div>
+                    <div class="deleted-item">deleted item</div>
                 </div>
             `
         }

@@ -16,7 +16,6 @@ CREATE TABLE "user" (
     username TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    history INTEGER[],
     favorites INTEGER[],
     date TEXT NOT NULL,
     deleted BOOLEAN NOT NULL

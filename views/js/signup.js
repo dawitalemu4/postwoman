@@ -18,7 +18,7 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
 
     if (emailRegex.test(email)) {
 
-        const createRequest = await fetch("/api/user/new", { method: "POST", body: JSON.stringify({"username": username, "email": email, "password": password, "date": `${Date.now()}`, "deleted": false}) });
+        const createRequest = await fetch("/api/user/new", { method: "POST", body: JSON.stringify({ "username": username, "email": email, "password": password, "date": `${Date.now()}`, "deleted": false })});
         const created = await createRequest.json();
 
         if (typeof created === "string" && created.length > 0) {

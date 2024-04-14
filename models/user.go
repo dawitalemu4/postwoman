@@ -6,7 +6,6 @@ type User struct {
     Username     string    `json:"username"`
     Email        string    `json:"email"`
     Password     string    `json:"password"`
-    History      []int     `json:"history"`
     Favorites    []int     `json:"favorites"`
     Date         string    `json:"date"`
     Deleted      bool      `json:"deleted"`

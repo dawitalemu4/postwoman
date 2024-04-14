@@ -2,7 +2,6 @@ package handlers
 
 import (
     "context"
-    "strings"
     "encoding/json"
 
     "github.com/labstack/echo/v4"
@@ -33,15 +32,17 @@ func GetAllFavoriteRequests(c echo.Context) error {
 
     var res []models.Request
     var request models.Request
+    var favoriteIDs []int
     var err error 
     email := c.Param("email")
-    favoriteIDs := c.Param("favoriteIDs")
 
-    for _, id := range strings.Split(favoriteIDs, ",") {
+    err = db.QueryRow(context.Background(), `SELECT favorites FROM "user" WHERE email = $1`, email).Scan(&favoriteIDs)
+
+    for _, id := range favoriteIDs {
 
         err = db.QueryRow(context.Background(), "SELECT * FROM request WHERE user_email = $1 AND id = $2 AND hidden = false ORDER BY id DESC", email, id).Scan(
             &request.ID, &request.User_email, &request.Url, &request.Method, &request.Origin, &request.Headers, &request.Body, &request.Status, &request.Date, &request.Hidden)
-    
+
         res = append(res, request)
     }
 
@@ -83,22 +84,23 @@ func CreateRequest(c echo.Context) error {
     return c.JSONPretty(200, res, " ")
 }
 
-func HideRequest(c echo.Context, email string) map[string]interface{} {
+func HideRequest(c echo.Context) error {
 
     var res string
+    email := c.Param("email")
     requestID := c.Param("reqID")
 
     err := db.QueryRow(context.Background(), "UPDATE request SET hidden = true WHERE id = $1 AND user_email = $2 RETURNING id", requestID, email).Scan(&res)
 
     if res != requestID {
-        return map[string]interface{}{"status": 401, "res": errorJSON("User Error", "No requests found made with the email and id provided")}
+        return c.JSONPretty(404, errorJSON("User Error", "No requests found made with the email and id provided"), " ")
     }
 
     if err != nil {
-        return map[string]interface{}{"status": 401, "res": errorJSON("Server Error", err.Error())}
+        return c.JSONPretty(500, errorJSON("Server Error", err.Error()), " ")
     }
 
-    return map[string]interface{}{"status": 401, "res": "successful"}
+    return c.NoContent(200)
 }
 
 func DeleteRequest(c echo.Context) error {
