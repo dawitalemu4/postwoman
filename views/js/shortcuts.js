@@ -1,6 +1,7 @@
 const currentPage = window.location.pathname;
 
 const shortuctKeys = {
+    "selectRequest": "Enter",
     "empty": "KeyJ",
     "history": "KeyH",
     "toggleFavorite": "KeyF",
@@ -16,6 +17,7 @@ const shortuctKeys = {
 };
 
 const homeKeys = [
+    shortuctKeys["selectRequest"],
     shortuctKeys["empty"],
     shortuctKeys["history"],
     shortuctKeys["toggleFavorite"],
@@ -48,7 +50,9 @@ const executeHomeShortcuts = (shortcut) => {
 
     const loggedIn = localStorage.getItem("auth");
 
-    if (shortcut === shortuctKeys["empty"]) {
+    if (shortcut === shortuctKeys["selectRequest"]) {
+        fillForm();
+    } else if (shortcut === shortuctKeys["empty"]) {
         emptyForm();
     } else if (shortcut === shortuctKeys["history"]) {
         toggleHistoryList();
@@ -110,6 +114,8 @@ document.addEventListener("keydown", (e) => {
         for (let i = 0; i < homeKeys.length; i++) {
             if ((e.metaKey || e.ctrlKey) && e.altKey && e.code === homeKeys[i]) {
                 executeHomeShortcuts(homeKeys[i]);
+            } else if (e.code === "Enter") {
+                executeHomeShortcuts(homeKeys[0]);
             };
         };
     } else if (currentPage === "/login") {

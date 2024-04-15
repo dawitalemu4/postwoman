@@ -1,0 +1,38 @@
+services:
+
+  db:
+    env_file:
+      - .env
+    image: 'postgres:15.2'
+    container_name: postwoman-db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    restart: always
+    ports:
+    - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  db-setup:
+    build:
+      dockerfile: Dockerfile
+    container_name: postwoman-db-setup
+    # volume: ./queries.sql:/queries.sql
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh "docker exec -it postwoman-db sh -c 'PGPASSWORD=${POSTGRES_PASSWORD} psql -U postgres -f ./queries.sql'"
+
+  postwoman:
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - '${GO_PORT}:${GO_PORT}'
+    depends_on:
+      db-setup:
+        condition: service_healthy 

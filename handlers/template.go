@@ -209,7 +209,7 @@ func RenderHistoryList(c echo.Context) error {
 
     email := c.Param("email")
 
-    historyListResponse, _ := exec.Command("curl", "http://localhost:13234/api/request/all/" + email).Output()
+    historyListResponse, _ := exec.Command("curl", "http://localhost:" + env["GO_PORT"] + "/api/request/all/" + email).Output()
     json.NewDecoder(bytes.NewReader(historyListResponse)).Decode(&historyList)
 
     if len(historyList) == 0 {
@@ -220,7 +220,7 @@ func RenderHistoryList(c echo.Context) error {
 
         int64Date, _ := strconv.ParseInt(request.Date, 10, 64)
 
-        if request.Hidden == false {
+        if request.Hidden == false && request.ID != 0 {
 
             request.Date = humanize.Time(time.UnixMilli(int64Date))
 
@@ -238,6 +238,9 @@ func RenderHistoryList(c echo.Context) error {
                     <div class="removed-favorite">removed from favorites</div>
                     <div class="not-loggedin">log in to save favorites</div>
                     <div class="deleted-item">deleted item</div>
+                    <input type="hidden" name="headers" value="` + request.Headers + `" />
+                    <input type="hidden" name="origin" value="` + request.Origin + `" />
+                    <input type="hidden" name="body" value="` + request.Body + `" />
                 </div>
             `
         }
@@ -254,7 +257,7 @@ func RenderFavoritesList(c echo.Context) error {
 
     email := c.Param("email")
 
-    favoritesListResponse, _ := exec.Command("curl", "http://localhost:13234/api/request/favorites/" + email).Output()
+    favoritesListResponse, _ := exec.Command("curl", "http://localhost:" + env["GO_PORT"] + "/api/request/favorites/" + email).Output()
     json.NewDecoder(bytes.NewReader(favoritesListResponse)).Decode(&favoritesList)
 
     if len(favoritesList) == 0 {
@@ -282,6 +285,9 @@ func RenderFavoritesList(c echo.Context) error {
                     <div class="added-favorite">added to favorites</div>
                     <div class="removed-favorite">removed from favorites</div>
                     <div class="deleted-item">deleted item</div>
+                    <input type="hidden" name="headers" value="` + request.Headers + `" />
+                    <input type="hidden" name="origin" value="` + request.Origin + `" />
+                    <input type="hidden" name="body" value="` + request.Body + `" />
                 </div>
             `
         }
