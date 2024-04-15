@@ -46,11 +46,15 @@ func ExecuteCurlRequest(c echo.Context) error {
     response, err := exec.Command(command[0], command[1:]...).Output()
 
     if err != nil && err.Error() == "exit status 6" {
-        return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid url</p>")
+        return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid url given</p>")
     }
 
     headersCmd := append(command[:1], append([]string{"-LI"}, command[1:]...)...)
-    headers, _ := exec.Command(headersCmd[0], headersCmd[1:]...).Output()
+    headers, err := exec.Command(headersCmd[0], headersCmd[1:]...).Output()
+
+    if err != nil {
+        return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid header or body given</p>")
+    }
 
     statusRegex := regexp.MustCompile(`HTTP\/\d\.\d\s(\d{3})`)
     statusMatch := statusRegex.FindStringSubmatch(string(headers))
@@ -62,16 +66,16 @@ func ExecuteCurlRequest(c echo.Context) error {
 
     stringRequest, _ := json.Marshal(request)
 
-    exec.Command("curl", "-X", "POST", "-d", string(stringRequest), "http://localhost:13234/api/request/new/" + request.User_email).Output()
+    exec.Command("curl", "-X", "POST", "-d", string(stringRequest), "http://localhost:" + env["GO_PORT"] + "/api/request/new/" + request.User_email).Output()
 
     errorResponseRegex := regexp.MustCompile(`<title>(?s).*Error.*<\/title>`)
-    if errorMatch := errorResponseRegex.FindStringSubmatch(string(response)); errorMatch != nil || err != nil {
+    if errorMatch := errorResponseRegex.FindStringSubmatch(string(response)); errorMatch != nil {
 
         preTagRegex := regexp.MustCompile(`<pre>(?s).*?<\/pre>`)
         preTagMatch := preTagRegex.FindStringSubmatch(string(response))
 
         if preTagMatch == nil {
-            return c.HTML(200, "<p>$  error: " + err.Error() + "<br /><br />status: " + splicedStatus + "response: " + string(response) + "</p>")
+            return c.HTML(200, "$  status: " + splicedStatus + "response: " + string(response))
         } else {
             return c.HTML(200, "$  error: " + preTagMatch[0] + "<br /><br />status: " + splicedStatus)
         }

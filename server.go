@@ -14,5 +14,5 @@ func main() {
     e = routes.UserRoutes()
     e = routes.RequestRoutes()
 
-    e.Logger.Fatal(e.Start(env["GO_PORT"]))
+    e.Logger.Fatal(e.Start(":" + env["GO_PORT"]))
 }

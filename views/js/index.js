@@ -32,8 +32,39 @@ const loading = () => {
     document.getElementById("request-response").innerHTML = "$  curling...";
 };
 
+const fillForm = () => {
+
+    const selectedItem = document.activeElement;
+    const curlForm = document.getElementById("new-request");
+
+    const methodField = curlForm.children.method;
+    const headersField = curlForm.children.headers;
+    const originField = curlForm.children.origin;
+    const bodyField = curlForm.children.body;
+    const urlField = curlForm.children.url;
+
+    if (selectedItem.className === "history-item" || selectedItem.className === "favorites-item") {
+
+        methodField.value = selectedItem.children[0].children[1].innerHTML;
+        headersField.value = selectedItem.children.headers.value;
+        originField.value = selectedItem.children.origin.value;
+        bodyField.value = selectedItem.children.body.value;
+        urlField.value = selectedItem.children[1].children[0].innerHTML;
+
+        document.getElementById("history-modal").style.display = "none";
+        document.getElementById("favorites-modal").style.display = "none";
+
+        methodField.focus();
+    };
+};
+
 const emptyForm = () => {
     document.getElementById("new-request").reset();
+};
+
+const removeItem = (array, id) => {
+    array.splice(array.indexOf(id), 1);
+    return array;
 };
 
 const toggleHistoryList = () => {
@@ -103,13 +134,6 @@ const toggleFavoritesList = () => {
             }, 100);
         };
     };
-};
-
-const fillForm = () => {};
-
-const removeItem = (array, id) => {
-    array.splice(array.indexOf(id), 1);
-    return array;
 };
 
 const toggleFavoriteItem = async () => {
