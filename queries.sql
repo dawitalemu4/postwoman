@@ -4,10 +4,7 @@ BEGIN
         CREATE DATABASE postwoman;
         \c postwoman;
     END IF;
-END $$;
 
-DO $$ 
-BEGIN
     IF NOT EXISTS(SELECT 1 FROM information_schema.tables WHERE table_name = 'request') THEN
         CREATE TABLE request (
             id SERIAL PRIMARY KEY,
@@ -22,10 +19,7 @@ BEGIN
             hidden BOOLEAN NOT NULL
         );
     END IF;
-END $$;
 
-DO $$ 
-BEGIN
     IF NOT EXISTS(SELECT 1 FROM information_schema.tables WHERE table_name = 'user') THEN
         CREATE TABLE "user" (
             id SERIAL PRIMARY KEY,
@@ -37,20 +31,14 @@ BEGIN
             deleted BOOLEAN NOT NULL
         );
     END IF;
-END $$;
 
-DO $$
-BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.table_constraints WHERE constraint_name = 'fk_request_user_email') THEN
         ALTER TABLE request
         ADD CONSTRAINT fk_request_user_email
         FOREIGN KEY (user_email)
         REFERENCES "user"(email);
     END IF;
-END $$;
 
-DO $$
-BEGIN
     IF NOT EXISTS (SELECT 1 FROM "user" WHERE email = 'null') THEN
         INSERT INTO "user" (username, email, password, date, deleted) VALUES ('anon', 'null', 'anon', CAST(CAST(EXTRACT(EPOCH FROM NOW()) AS INTEGER) AS TEXT), false);
     END IF;
