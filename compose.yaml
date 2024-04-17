@@ -4,7 +4,6 @@ services:
     env_file:
       - .env
     image: 'postgres:15.2'
-    container_name: postwoman-db
     healthcheck:
       test: ['CMD-SHELL', "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
       interval: 5s
@@ -15,7 +14,9 @@ services:
     - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
       - ./pgdata:/var/lib/postgresql/data
-      - ./queries.sql:/docker-entrypoint-initdb.d/queries.sql
+      - ./queries.sql:/queries.sql
+    networks:
+      - default
 
   postwoman:
     env_file:
@@ -26,4 +27,10 @@ services:
       - '${GO_PORT}:${GO_PORT}'
     depends_on:
       db:
-        condition: service_healthy 
+        condition: service_healthy
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
