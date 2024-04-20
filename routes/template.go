@@ -43,7 +43,6 @@ func TemplateRoutes() *echo.Echo {
 
     e.Static("/public", "views/public")
     e.Static("/robots.txt", "views/public/robots.txt")
-    e.Static("/favicon.ico", "views/public/favicon.ico")
     e.Static("/css", "views/css")
     e.Static("/js", "views/js")
 

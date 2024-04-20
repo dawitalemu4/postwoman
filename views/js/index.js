@@ -32,6 +32,15 @@ const loading = () => {
     document.getElementById("request-response").innerHTML = "$  curling...";
 };
 
+const formatResponse = () => {
+
+    const responseTextarea = document.getElementById("response-textarea");
+
+    if (responseTextarea.textContent.charAt(0) === "{" || responseTextarea.textContent.charAt(0) === "[") {
+        responseTextarea.textContent = JSON.stringify(JSON.parse(responseTextarea.textContent), null, 4) + "\n";
+    };
+};
+
 const fillForm = () => {
 
     const selectedItem = document.activeElement;
