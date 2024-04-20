@@ -182,6 +182,7 @@ func RenderNewRequest(c echo.Context) error {
             hx-swap="innerHTML"
             hx-ext="json-enc"
             hx-on::before-request="loading()"
+            hx-on::after-request="formatResponse()"
         >
             $  curl -X <select name="method" autofocus required>
                 <option value="GET">GET</option>
@@ -224,6 +225,10 @@ func RenderHistoryList(c echo.Context) error {
 
             request.Date = humanize.Time(time.UnixMilli(int64Date))
 
+            if request.Body == "" {
+                request.Body = "''"
+            }
+
             htmlHistoryList += `
                 <div class="history-item" tabindex="` + strconv.Itoa(i+1) + `" id="` + strconv.Itoa(request.ID) + `">
                     <div class="history-item-left-container">
@@ -240,7 +245,7 @@ func RenderHistoryList(c echo.Context) error {
                     <div class="deleted-item">deleted item</div>
                     <input type="hidden" name="headers" value="` + request.Headers + `" />
                     <input type="hidden" name="origin" value="` + request.Origin + `" />
-                    <input type="hidden" name="body" value="` + request.Body + `" />
+                    <input type="hidden" name="body" value=` + request.Body + ` />
                 </div>
             `
         }
@@ -272,6 +277,10 @@ func RenderFavoritesList(c echo.Context) error {
 
             request.Date = humanize.Time(time.UnixMilli(int64Date))
 
+            if request.Body == "" {
+                request.Body = "''"
+            }
+
             htmlFavoritesList += `
                 <div class="favorites-item" tabindex="` + strconv.Itoa(i+1) + `" id="` + strconv.Itoa(request.ID) + `">
                     <div class="favorites-item-left-container">
@@ -287,7 +296,7 @@ func RenderFavoritesList(c echo.Context) error {
                     <div class="deleted-item">deleted item</div>
                     <input type="hidden" name="headers" value="` + request.Headers + `" />
                     <input type="hidden" name="origin" value="` + request.Origin + `" />
-                    <input type="hidden" name="body" value="` + request.Body + `" />
+                    <input type="hidden" name="body" value=` + request.Body + ` />
                 </div>
             `
         }

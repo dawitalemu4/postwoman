@@ -1,18 +1,49 @@
-FROM golang:1.22.2
+# for you
 
-WORKDIR /app
+# FROM dawitalemu4/postwoman:latest AS builder
 
-COPY go.mod go.sum ./
+
+# FROM golang:1.22.2
+
+# RUN apt-get update && apt-get install -y curl
+
+# COPY --from=builder /postwoman /postwoman
+# COPY --from=builder /go/views /go/views
+
+# COPY .env .
+
+# CMD ["/postwoman"]
+
+
+# for me (push to docker hub)
+
+# FROM golang:1.22.2 AS builder
+
+# COPY . .
+
+# RUN go build -o /postwoman
+
+# docker image build -t postwoman .
+# docker image tag postwoman dawitalemu4/postwoman:latest
+# docker push dawitalemu4/postwoman:latest
+
+
+# for me (test locally)
+
+FROM golang:1.22.2 AS builder
 
 COPY . .
 
-RUN go get
+RUN go build -o /postwoman
 
-COPY *.go ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+FROM golang:1.22.2
 
-# your port of choice, make sure it matches with the port in your .env 
-EXPOSE 13234
+RUN apt-get update && apt-get install -y curl
 
-CMD ["/docker-gs-ping"]
+COPY --from=builder /postwoman /postwoman
+COPY --from=builder /go/views /go/views
+
+COPY .env .
+
+CMD ["/postwoman"]

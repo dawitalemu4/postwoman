@@ -1,6 +1,8 @@
 package handlers
 
 import (
+    "strings"
+    "bytes"
     "encoding/json"
     "os/exec"
     "strconv"
@@ -14,7 +16,8 @@ import (
 
 func buildCommand(request models.Request) []string {
 
-    command := []string{"curl", "-v"}
+    shell := []string{"bash", "-c"}
+    command := []string{"curl", "-L", "-v", "--http1.1"}
 
     if request.Method != "" {
         command = append(command, "-X", request.Method)
@@ -33,32 +36,34 @@ func buildCommand(request models.Request) []string {
     }
 
     command = append(command, request.Url)
-    return command
+    shell = append(shell, strings.Join(command, " "))
+    return shell 
 }
 
 func ExecuteCurlRequest(c echo.Context) error {
 
     var request models.Request
+    var response, headers bytes.Buffer
 
     json.NewDecoder(c.Request().Body).Decode(&request)
 
     command := buildCommand(request)
-    response, err := exec.Command(command[0], command[1:]...).Output()
+    curlRequest := exec.Command(command[0], command[1:]...)
+
+    curlRequest.Stdout = &response
+    curlRequest.Stderr = &headers
+
+    err := curlRequest.Run()
 
     if err != nil && err.Error() == "exit status 6" {
         return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid url given</p>")
-    }
-
-    headersCmd := append(command[:1], append([]string{"-LI"}, command[1:]...)...)
-    headers, err := exec.Command(headersCmd[0], headersCmd[1:]...).Output()
-
-    if err != nil {
+    } else if err != nil {
         return c.HTML(200, "<p>$  error: " + err.Error() + ", probably an invalid header or body given</p>")
     }
 
     statusRegex := regexp.MustCompile(`HTTP\/\d\.\d\s(\d{3})`)
-    statusMatch := statusRegex.FindStringSubmatch(string(headers))
-    splicedStatus := statusMatch[0][len(statusMatch[0])-3:]
+    statusMatch := statusRegex.FindAllStringSubmatch(headers.String(), -1)
+    splicedStatus := statusMatch[len(statusMatch) - 1][1]
 
     request.Status = splicedStatus 
     request.Date = strconv.FormatInt(time.Now().UTC().UnixMilli(), 10)
@@ -69,13 +74,14 @@ func ExecuteCurlRequest(c echo.Context) error {
     exec.Command("curl", "-X", "POST", "-d", string(stringRequest), "http://localhost:" + env["GO_PORT"] + "/api/request/new/" + request.User_email).Output()
 
     errorResponseRegex := regexp.MustCompile(`<title>(?s).*Error.*<\/title>`)
-    if errorMatch := errorResponseRegex.FindStringSubmatch(string(response)); errorMatch != nil {
+
+    if errorMatch := errorResponseRegex.FindStringSubmatch(response.String()); errorMatch != nil {
 
         preTagRegex := regexp.MustCompile(`<pre>(?s).*?<\/pre>`)
-        preTagMatch := preTagRegex.FindStringSubmatch(string(response))
+        preTagMatch := preTagRegex.FindStringSubmatch(response.String())
 
         if preTagMatch == nil {
-            return c.HTML(200, "$  status: " + splicedStatus + "response: " + string(response))
+            return c.HTML(200, "$  status: " + splicedStatus + "response: " + response.String())
         } else {
             return c.HTML(200, "$  error: " + preTagMatch[0] + "<br /><br />status: " + splicedStatus)
         }
@@ -84,6 +90,6 @@ func ExecuteCurlRequest(c echo.Context) error {
     return c.HTML(200, `
         $  status: ` + splicedStatus + `
         <br /><br />
-        <textarea id="response-textarea" readonly>` + string(response) + `&#013;</textarea>
+        <textarea id="response-textarea" readonly>` + response.String() + `&#013;</textarea>
     `)
 }
