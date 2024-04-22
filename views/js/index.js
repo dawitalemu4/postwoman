@@ -38,6 +38,13 @@ const formatResponse = () => {
 
     if (responseTextarea.textContent.charAt(0) === "{" || responseTextarea.textContent.charAt(0) === "[") {
         responseTextarea.textContent = JSON.stringify(JSON.parse(responseTextarea.textContent), null, 4) + "\n";
+    } else if (responseTextarea.textContent.charAt(0) === "<") {
+
+        responseTextarea.textContent = html_beautify(responseTextarea.textContent);
+
+        setTimeout(() => {
+            document.title = "postwoman";
+        }, 200);
     };
 };
 

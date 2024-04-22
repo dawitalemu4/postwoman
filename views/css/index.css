@@ -19,7 +19,7 @@
 #new-request textarea {
     width: 70%;
     min-width: 270px;
-    max-width: 500px;
+    max-width: 75%;
     height: 100px;
     resize: none;
     margin-bottom: -90px;
@@ -48,10 +48,6 @@
     resize: none;
 }
 
-pre { 
-    display: inline; 
-    margin: 0;
-}
 
 #history-modal, #favorites-modal {
     display: none;
