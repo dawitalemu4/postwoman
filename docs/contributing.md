@@ -1,3 +1,7 @@
-I want to keep ...
-PR template ...
-Issue template ...
+## Contributing
+
+### Things I Want to Keep
+
+### PR Checklist
+
+### Issue Checklist

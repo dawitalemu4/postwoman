@@ -74,11 +74,11 @@
     <div><kbd>tab</kbd> - next text box</div>
     <div><kbd>shift</kbd> + <kbd>tab</kbd> - previous text box</div>
     <div><kbd>↑</kbd> or <kbd>↓</kbd> - select autofill options</div>
-    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>j</kbd> - empty request</div>
-    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>h</kbd> - toggle history list</div>
-    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>d</kbd> - remove request from history</div>
-    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>v</kbd> - toggle favorites list</div>
-    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>f</kbd> - favorite/unfavorite</div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>j</kbd> - <span onclick="emptyForm()">empty request</span></div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>h</kbd> - <span onclick="toggleHistoryList()">toggle history list</span></div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>d</kbd> - <span onclick="hideRequest()">remove request from history</span></div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>v</kbd> - <span onclick="toggleFavoritesList()">toggle favorites list</span></div>
+    <div><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>f</kbd> - <span onclick="toggleFavoriteItem()">favorite/unfavorite</span></div>
 {{ end }}
 
 {{ define "login-shortcuts" }}
