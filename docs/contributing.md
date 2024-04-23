@@ -1,6 +1,8 @@
 ## Contributing
 
 
+Here is a tutorial on how to contribute to public repos from [GitHub's docs](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project). Please make your pr to the dev branch.
+
 ### Things I Want to Keep
 
 - Ability to do everything from my keyboard
