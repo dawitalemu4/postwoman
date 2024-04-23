@@ -17,7 +17,43 @@ Postwoman is a self-hosted dev tool that achieves what postman does but with my 
 
 ## Features
 
-video demos ...
+### Make Request
+
+<video height="600px" controls autoplay preload muted loop>
+    <source src="https://github.com/dawitalemu4/postwoman/assets/106638403/b09125dd-565e-479f-be58-194261c2667f">
+</video>
+
+<p style="visibility:hidden">https://github.com/dawitalemu4/postwoman/assets/106638403/b09125dd-565e-479f-be58-194261c2667f</p>
+
+> JSON and HTML responses are automatically formatted.
+
+
+### History List
+
+<video height="600px" controls autoplay preload muted loop>
+    <source src="https://github.com/dawitalemu4/postwoman/assets/106638403/27d2a4b0-9890-43bd-9bfd-8f928445e011">
+</video>
+
+<p style="visibility:hidden">https://github.com/dawitalemu4/postwoman/assets/106638403/27d2a4b0-9890-43bd-9bfd-8f928445e011</p>
+
+
+### Favorites List
+
+<video height="600px" controls autoplay preload muted loop>
+    <source src="https://github.com/dawitalemu4/postwoman/assets/106638403/9dd3a5b9-e647-48ec-932f-6b0bd84885bd">
+</video>
+
+<p style="visibility:hidden">https://github.com/dawitalemu4/postwoman/assets/106638403/9dd3a5b9-e647-48ec-932f-6b0bd84885bd</p>
+
+
+### Fill Form from List
+
+<video height="600px" controls autoplay preload muted loop>
+    <source src="https://github.com/dawitalemu4/postwoman/assets/106638403/2b725e99-f3b3-4b6c-ba3c-33f6369b3e1d">
+</video>
+
+<p style="visibility:hidden">https://github.com/dawitalemu4/postwoman/assets/106638403/2b725e99-f3b3-4b6c-ba3c-33f6369b3e1d</p>
+
 
 Go to [postwoman.dev/features](https://postwoman.dev/features) or [features.md](https://github.com/dawitalemu4/postwoman/blob/main/docs/features.md) to view all features.
 
@@ -44,9 +80,13 @@ go mod tidy
 
 3. Rename the `.env.example` file to `.env` and use your own values (or you can just use the provided values)
 
-4. Start the PostgreSQL server (the default windows path is "C:\Program Files\PostgreSQL\16\data")
+4. Start the PostgreSQL server
 ```bash
-pg_ctl -D "YOURPATH" start
+pg_ctl -D "C:\Program Files\PostgreSQL\16\data" start # default postgres path on windows
+```
+or
+```bash
+pg_ctl -D /usr/local/var/postgres start # default postgres path on mac
 ```
 
 5. Run the server (I prefer air for hot reload)
@@ -74,18 +114,20 @@ Visit [postwoman.dev/shortcuts](https://postwoman.dev/shortcuts) or [shortcuts.m
 
 ## Contributing
 
-I'm open to contributions and suggestions, but fork this project if there are any crazy big changes you want to make that go against the [things I want to keep](https://github.com/dawitalemu4/postwoman/tree/main/docs/contributing.md).
+I'm open to contributions and suggestions, but fork this project if there are any crazy big changes you want to make that go against the [things I want to keep](https://github.com/dawitalemu4/postwoman/blob/main/docs/contributing.md#things-i-want-to-keep).
 
 Follow the checklist in the [contributing.md](https://github.com/dawitalemu4/postwoman/tree/main/docs/contributing.md) if you create a pull request or an issue.
 
 
 ## FAQ
 
-**Why this UI style? Just use the terminal?**
-> I wanted to be able to see the history of my requests, favorite some requests when I'm working on a specific controller, and see the status of the request on the request's preview before I select it, which postman didn't have and I hated guessing and trying each one to see which one works.
+**Q:** **Why this UI style? Just use the terminal?**
 
-**Why self-hosted?**
-> I don't want to pay for cloud resources for your convenience. Jokes aside, it's impossible to make API requests to an API that is locally hosted from postwoman if it was hosted on a deployed server (without having a user download something locally), and I plan on using this on APIs I'm building locally.
+**A:** I wanted to be able to see the history of my requests, favorite some requests when I'm working on a specific controller, and see the status of the request on the request's preview before I select it, which postman didn't have and I hated guessing and trying each one to see which one works.
+
+**Q:** **Why self-hosted?**
+
+**A:**  I don't want to pay for cloud resources for your convenience. Jokes aside, it's impossible to make API requests to an API that is locally hosted from postwoman if it was hosted on a deployed server (without having a user download something locally), and I plan on using this on APIs I'm building locally.
 
 Leave a post in the [discussions](https://github.com/dawitalemu4/postwoman/discussions) if you have any questions.
 
