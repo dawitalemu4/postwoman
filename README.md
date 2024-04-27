@@ -55,7 +55,7 @@ Postwoman is a self-hosted dev tool that achieves what postman does but with my 
 <p style="visibility:hidden">https://github.com/dawitalemu4/postwoman/assets/106638403/2b725e99-f3b3-4b6c-ba3c-33f6369b3e1d</p>
 
 
-Go to [postwoman.dev/features](https://postwoman.dev/features) or [features.md](https://github.com/dawitalemu4/postwoman.dev/blob/main/src/assets/docs/features.md) to view all features.
+Go to [postwoman.dev/features](https://postwoman.dev/features) to view all features.
 
 
 ## Installation
@@ -102,21 +102,21 @@ air
 
 Download links: [Go](https://go.dev/doc/install), [PostgreSQL](https://www.postgresql.org/download/), [Bash](https://git-scm.com/downloads) (I prefer git bash), [cURL](https://curl.se/download.html).
 
-View [postwoman.dev/install](https://postwoman.dev/install) or [install.md](https://github.com/dawitalemu4/postwoman.dev/blob/main/src/assets/docs/install.md) for more detailed instructions for your OS.
+View [postwoman.dev/install](https://postwoman.dev/install) for more detailed instructions for your OS.
 
 
 ## Startup Shortcuts
 
 Check out my [startup script](https://github.com/dawitalemu4/postwoman/blob/main/startup.sh) to easily start up postwoman locally from a shortcut on your taskbar, or this [startup script](https://github.com/dawitalemu4/postwoman/tree/main/.docker-setup/startup.sh) if you are using docker.
 
-Visit [postwoman.dev/shortcuts](https://postwoman.dev/shortcuts) or [shortcuts.md](https://github.com/dawitalemu4/postwoman.dev/blob/main/src/assets/docs/shortcuts.md) for demo videos and tutorials on how to make your own shortcut.
+Visit [postwoman.dev/shortcuts](https://postwoman.dev/shortcuts) for demo videos and tutorials on how to make your own shortcut.
 
 
 ## Contributing
 
-I'm open to contributions and suggestions, but fork this project if there are any crazy big changes you want to make that go against the [things I want to keep](https://github.com/dawitalemu4/postwoman.dev/blob/main/src/assets/docs/contributing.md#things-i-want-to-keep).
+I'm open to contributions and suggestions, but fork this project if there are any crazy big changes you want to make that go against the [postwoman.dev/contributing](https://postwoman.dev/contributing).
 
-Follow the checklist in the [contributing.md](https://github.com/dawitalemu4/postwoman.dev/blob/main/src/assets/docs/contributing.md) if you create a pull request or an issue.
+Follow the checklist in the [postwoman.dev/contributing](https://postwoman.dev/contributing) if you create a pull request or an issue.
 
 
 ## FAQ
